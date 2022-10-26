@@ -20,7 +20,20 @@ This is the repo used for the LCC '22-'23 robot.
 ```
 {
     "configurations": [
-        {
+        {      
+            "browse": {
+                "path": [
+                "<USERNAME>/Library/Arduino15/packages/arduino/hardware/avr/<AVR_VERSION>/cores/arduino",
+                "<USERNAME>/Library/Arduino15/packages/arduino/tools/avr-gcc/<VERSION>-arduino7/avr/include",
+                "<USERNAME>/Library/Arduino15/packages/arduino/tools/avr-gcc/<VERSION>-arduino7/lib/gcc/avr/7.3.0/include",
+                "<USERNAME>/Library/Arduino15/packages/arduino/hardware/avr/<AVR_VERSION>/variants/mega",
+                "<USERNAME>/Library/Arduino15/packages/arduino/hardware/**",
+                "<USERNAME>/Documents/Arduino/libraries/**",
+                "<USERNAME>/Documents/Arduino/libraries/CrcLib_1.2.0/**",
+                "${workspaceFolder}/lib/**",
+                "${workspaceFolder}/**"
+                ]
+            },
             "cStandard": "c17",
             "cppStandard": "c++17",
             "defines": [
