@@ -1,6 +1,6 @@
-#include <CrcLib.h>
-namespace Crc;
+#include <CrcLib/CrcLib.h>
 
+using namespace Crc;
 void setup {
     Serial.begin(9600);
     CrcLib::Initialize();
@@ -9,8 +9,6 @@ void setup {
     CrcLib::SetDigitalPinMode(CRC_DIG_2, INPUT);
     
     CrcLib::InitializePwmOutput(CRC_PWM_5);
-    
-
 }
 
 void loop {
