@@ -1,7 +1,8 @@
 #include <CrcLib/CrcLib.h>
 
 using namespace Crc;
-void setup {
+
+void setup() {
     Serial.begin(9600);
     CrcLib::Initialize();
 
@@ -11,7 +12,7 @@ void setup {
     CrcLib::InitializePwmOutput(CRC_PWM_5);
 }
 
-void loop {
+void loop() {
     CrcLib::Update();
 
     if (CRC_DIG_4 == 1){
