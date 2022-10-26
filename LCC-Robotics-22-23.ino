@@ -1,5 +1,3 @@
-#define __AVR_ATmega1280__ // get around dumb header guard in CrcLib
-
 #include <CrcLib/CrcLib.h>
 
 #include "inc/motor.h"
