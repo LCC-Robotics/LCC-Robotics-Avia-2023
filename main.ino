@@ -1,4 +1,4 @@
-#define __AVR_ATmega1280__ // get around dumb heafder guard in CrcLib
+#define __AVR_ATmega1280__ // get around dumb header guard in CrcLib
 
 #include <CrcLib/CrcLib.h>
 #include "inc/robot.h"
