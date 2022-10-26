@@ -13,7 +13,7 @@ This is the repo used for the LCC '22-'23 robot.
 
 #### MacOS
 
-1. Install dependencies into `/User/<USERNAME>/Documents/Arduino/libraries`. This can be done using `arduino-cli` or manually. 
+1. Install dependencies into `/User//Users/<USERNAME>/Documents/Arduino/libraries`. This can be done using `arduino-cli` or manually. 
 2. Install the `Arduino` extension for VSCode.
 3. Initialize project by executing the `Arduino: Initialize` command.
 4. Create a `c_cpp_properties.json` in the `.vscode` directory, using the following template: 
@@ -23,13 +23,13 @@ This is the repo used for the LCC '22-'23 robot.
         {      
             "browse": {
                 "path": [
-                "<USERNAME>/Library/Arduino15/packages/arduino/hardware/avr/<AVR_VERSION>/cores/arduino",
-                "<USERNAME>/Library/Arduino15/packages/arduino/tools/avr-gcc/<VERSION>-arduino7/avr/include",
-                "<USERNAME>/Library/Arduino15/packages/arduino/tools/avr-gcc/<VERSION>-arduino7/lib/gcc/avr/7.3.0/include",
-                "<USERNAME>/Library/Arduino15/packages/arduino/hardware/avr/<AVR_VERSION>/variants/mega",
-                "<USERNAME>/Library/Arduino15/packages/arduino/hardware/**",
-                "<USERNAME>/Documents/Arduino/libraries/**",
-                "<USERNAME>/Documents/Arduino/libraries/CrcLib_1.2.0/**",
+                "/Users/<USERNAME>/Library/Arduino15/packages/arduino/hardware/avr/<AVR_VERSION>/cores/arduino",
+                "/Users/<USERNAME>/Library/Arduino15/packages/arduino/tools/avr-gcc/<VERSION>-arduino7/avr/include",
+                "/Users/<USERNAME>/Library/Arduino15/packages/arduino/tools/avr-gcc/<VERSION>-arduino7/lib/gcc/avr/7.3.0/include",
+                "/Users/<USERNAME>/Library/Arduino15/packages/arduino/hardware/avr/<AVR_VERSION>/variants/mega",
+                "/Users/<USERNAME>/Library/Arduino15/packages/arduino/hardware/**",
+                "/Users/<USERNAME>/Documents/Arduino/libraries/**",
+                "/Users/<USERNAME>/Documents/Arduino/libraries/CrcLib_1.2.0/**",
                 "${workspaceFolder}/lib/**",
                 "${workspaceFolder}/**"
                 ]
@@ -42,16 +42,16 @@ This is the repo used for the LCC '22-'23 robot.
                 "_UNICODE"
             ],
             "forcedInclude": [
-                "<USERNAME>/Library/Arduino15/packages/arduino/hardware/avr/<AVR_VERSION>/cores/arduino/Arduino.h"
+                "/Users/<USERNAME>/Library/Arduino15/packages/arduino/hardware/avr/<AVR_VERSION>/cores/arduino/Arduino.h"
             ],
             "includePath": [
-                "<USERNAME>/Library/Arduino15/packages/arduino/hardware/avr/<AVR_VERSION>/cores/arduino",
-                "<USERNAME>/Library/Arduino15/packages/arduino/tools/avr-gcc/<VERSION>-arduino7/avr/include",
-                "<USERNAME>/Library/Arduino15/packages/arduino/tools/avr-gcc/<VERSION>-arduino7/lib/gcc/avr/7.3.0/include",
-                "<USERNAME>/Library/Arduino15/packages/arduino/hardware/avr/<AVR_VERSION>/variants/mega",
-                "<USERNAME>/Library/Arduino15/packages/arduino/hardware/**",
-                "<USERNAME>/Documents/Arduino/libraries/**",
-                "<USERNAME>/Documents/Arduino/libraries/CrcLib_1.2.0/**",
+                "/Users/<USERNAME>/Library/Arduino15/packages/arduino/hardware/avr/<AVR_VERSION>/cores/arduino",
+                "/Users/<USERNAME>/Library/Arduino15/packages/arduino/tools/avr-gcc/<VERSION>-arduino7/avr/include",
+                "/Users/<USERNAME>/Library/Arduino15/packages/arduino/tools/avr-gcc/<VERSION>-arduino7/lib/gcc/avr/7.3.0/include",
+                "/Users/<USERNAME>/Library/Arduino15/packages/arduino/hardware/avr/<AVR_VERSION>/variants/mega",
+                "/Users/<USERNAME>/Library/Arduino15/packages/arduino/hardware/**",
+                "/Users/<USERNAME>/Documents/Arduino/libraries/**",
+                "/Users/<USERNAME>/Documents/Arduino/libraries/CrcLib_1.2.0/**",
                 "${workspaceFolder}/lib/**",
                 "${workspaceFolder}/**"
             ],
@@ -59,6 +59,7 @@ This is the repo used for the LCC '22-'23 robot.
         }
     ],
     "version": 4
+}
 ```
 5. ...
 6. ...
