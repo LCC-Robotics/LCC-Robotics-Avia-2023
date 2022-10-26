@@ -1,6 +1,6 @@
 {
     "board": "arduino:avr:mega",
     "intelliSenseGen": "global",
-    "output": "../build",
+    "output": "build",
     "sketch": "main.ino"
 }
