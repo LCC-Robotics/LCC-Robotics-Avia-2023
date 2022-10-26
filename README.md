@@ -4,6 +4,7 @@ This is the repo used for the LCC '22-'23 robot.
 
 ## Dependencies
 [CrcLib@1.2.0](https://github.com/Robotique-CRC-Robotics/Robotique-CRC-Robotics/tree/master/CrcLib/CrcLib)
+
 [Servo@1.1.8](https://github.com/arduino-libraries/Servo)
 
 ## Build Instructions
@@ -51,5 +52,7 @@ This is the repo used for the LCC '22-'23 robot.
 7. Enjoy!
 
 ## Authors
+
 Angela Wang
+
 Kenneth Lew
