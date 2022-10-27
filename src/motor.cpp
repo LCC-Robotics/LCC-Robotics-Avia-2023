@@ -1,10 +1,9 @@
-#include <CrcLib/CrcLib.h>
+#include "../lib/CrcLib/CrcLib.h"
 
-#include "../inc/motor.h"
+#include "../include/motor.h"
 
 void init_pwm() {
-    Crc::CrcLib::Initialize
-}
+};
 
 void init_servos() {}
 
