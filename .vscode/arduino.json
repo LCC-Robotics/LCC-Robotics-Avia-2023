@@ -1,6 +1,0 @@
-{
-    "board": "arduino:avr:mega",
-    "intelliSenseGen": "global",
-    "output": "build",
-    "sketch": "LCC-Robotics-22-23.ino"
-}

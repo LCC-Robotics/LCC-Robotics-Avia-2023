@@ -5,7 +5,6 @@
         "platformio.platformio-ide"
     ],
     "unwantedRecommendations": [
-        "llvm-vs-code-extensions.vscode-clangd",
         "ms-vscode.cpptools-extension-pack"
     ]
 }
