@@ -16,8 +16,7 @@ enum Servo {
 
 };
 
-void init_pwm() { }
-
-void init_servos() { }
+void init_pwm();
+void init_servos();
 
 #endif // __ROBOTICS_LCC_ROBOTICS_22_23_INC_MOTOR_H_
