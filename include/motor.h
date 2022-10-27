@@ -1,9 +1,7 @@
 #ifndef __ROBOTICS_LCC_ROBOTICS_22_23_INC_MOTOR_H_
 #define __ROBOTICS_LCC_ROBOTICS_22_23_INC_MOTOR_H_
 
-#include <CrcLib/CrcLib.h>
-
-using namespace Crc;
+#include "../lib/CrcLib/CrcLib.h"
 
 enum PWM {
     DRIVE_FL = CRC_PWM_1,
@@ -12,7 +10,7 @@ enum PWM {
     DRIVE_BR = CRC_PWM_4
 };
 
-enum Servo {
+enum Servos {
 
 };
 
