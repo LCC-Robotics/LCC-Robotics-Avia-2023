@@ -1,9 +1,16 @@
-#include "../lib/CrcLib/CrcLib.h"
+#include "CrcLib.h"
 
-#include "../include/motor.h"
+#include "motor.h"
 
-void init_pwm() {
+using namespace Crc;
+
+void initPWM()
+{
+    CrcLib::SetDigitalPinMode(DRIVE_FL, INPUT);
+    CrcLib::SetDigitalPinMode(DRIVE_FR, INPUT);
+    CrcLib::SetDigitalPinMode(DRIVE_BL, INPUT);
+    CrcLib::SetDigitalPinMode(DRIVE_BR, INPUT);
 };
 
-void init_servos() {}
+void initServos(){};
 

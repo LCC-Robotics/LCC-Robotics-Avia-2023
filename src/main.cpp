@@ -1,10 +1,11 @@
 #include <Arduino.h>
 
-#include "../lib/CrcLib/CrcLib.h"
+#include "CrcLib.h" // Crc dependency
+#include "Bounce2.h" // debounce library
 
-#include "../include/motor.h"
-#include "../include/limits.h"
-#include "../include/utils.h"
+#include "motor.h"
+#include "safety.h"
+#include "utils.h"
 
 using namespace Crc;
 
@@ -12,12 +13,9 @@ void setup()
 {
     CrcLib::Initialize();
 
-    CrcLib::SetDigitalPinMode(CRC_DIG_1, INPUT);
-    CrcLib::SetDigitalPinMode(CRC_DIG_2, INPUT);
+    initPWM();
 
-    CrcLib::InitializePwmOutput(CRC_PWM_5);
-
-    Serial.begin(BAUD);
+    Serial.begin(BAUD); // macro defined in platformio.ini
 }
 
 void loop()
@@ -26,4 +24,13 @@ void loop()
 
     if (!CrcLib::IsCommValid())
         return;
+
+    CrcLib::MoveHolonomic(
+        ANALOG::JOYSTICK1_X,
+        ANALOG::JOYSTICK1_Y,
+        ANALOG::JOYSTICK2_X,
+        DRIVE_FL,
+        DRIVE_BL,
+        DRIVE_FR,
+        DRIVE_BR);
 }
