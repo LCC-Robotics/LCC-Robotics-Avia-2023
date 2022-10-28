@@ -4,6 +4,6 @@
 // min and max are inclusive
 int safety(bool activated, int value, int min, int max)
 {
-    if (!activated) return;
+    if (!activated) return value;
     return clamp(value, min, max);
 }   
