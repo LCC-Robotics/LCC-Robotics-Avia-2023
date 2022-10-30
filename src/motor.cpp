@@ -10,9 +10,9 @@ void PWM_Motor::init()
     CrcLib::InitializePwmOutput(pin);
 }
 
-void PWM_Motor::update() 
-{   
-    if (slewRate == 0) // slew of 0 disables motor
+void PWM_Motor::update()
+{
+    if (!slewRate)
         return;
 
     auto dt = millis() - _last_tick; // calculate delta time
@@ -37,6 +37,14 @@ void DriveTrain::update()
     FRMotor.update();
     BLMotor.update();
     BRMotor.update();
+}
+
+void DriveTrain::stop()
+{
+    FLMotor.command = 0;
+    FRMotor.command = 0;
+    BLMotor.command = 0;
+    BRMotor.command = 0;
 }
 
 void DriveTrain::moveHolonomic(int8_t forwardChannel, int8_t yawChannel, int8_t strafeChannel)
