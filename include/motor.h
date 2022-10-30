@@ -17,7 +17,7 @@ struct PWM_Motor {
     float slewRate = DEFAULT_SLEW_RATE; // Limit slew
 
     int _output = 0; // Adjusted value that motor will be set to
-    unsigned long _last_tick; // Millis
+    unsigned long _lastTick; // Millis
 
     /**
      * @brief Init pwm pin

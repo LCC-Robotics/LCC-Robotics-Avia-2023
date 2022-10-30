@@ -15,7 +15,7 @@ void PWM_Motor::update()
     if (!slewRate)
         return;
 
-    auto dt = millis() - _last_tick; // calculate delta time
+    auto dt = millis() - _lastTick; // calculate delta time
     _output = limitSlew(flipped ? -command : command, _output, (int)(slewRate * dt));
 
     if (command != _output) {
