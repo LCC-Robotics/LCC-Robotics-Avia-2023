@@ -14,10 +14,10 @@ struct PWM_Motor {
     unsigned char pin; // PWM pin
     int command = 0; // Value that we want to be set
     bool flipped = false; // Programmatically flips motor
-    float slewRate = DEFAULT_SLEW_RATE; // Limit slew - set to 0 to disable motor
+    float slewRate = DEFAULT_SLEW_RATE; // Limit slew
 
     int _output = 0; // Adjusted value that motor will be set to
-    unsigned long _last_tick; // Millis
+    unsigned long _lastUpdate; // Millis
 
     /**
      * @brief Init pwm pin
@@ -31,7 +31,7 @@ struct PWM_Motor {
 };
 
 /**
- * @brief Manages motors of the drivetrain. 
+ * @brief Manages motors of the drivetrain.
  */
 struct DriveTrain {
     PWM_Motor FLMotor;
@@ -39,7 +39,7 @@ struct DriveTrain {
     PWM_Motor BLMotor;
     PWM_Motor BRMotor;
 
-    /** 
+    /**
      * @brief Calls init function of all motors.
      */
     void init();
@@ -48,6 +48,11 @@ struct DriveTrain {
      * @brief Calls update function all motors. Should be ran every MOTOR_UPDATE_INTERVAL.
      */
     void update();
+
+    /**
+     * @brief sets all motors to 0
+     */
+    void stop();
 
     /**
      * @brief Based on parameters updates motor command values.

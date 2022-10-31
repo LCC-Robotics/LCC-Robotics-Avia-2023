@@ -6,6 +6,9 @@
 
 #include "utils.h"
 
+#define PWM_LIMIT_POSITIVE 0, 127
+#define PWM_LIMIT_NEGATIVE -127, 0
+
 /**
  * @brief Simple function which prevents robot from committing self die by clamping the raws between min and max when limit switch is activated
  *
