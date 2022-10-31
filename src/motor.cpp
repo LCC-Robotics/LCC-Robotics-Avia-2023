@@ -18,12 +18,12 @@ void PWM_Motor::update()
     auto thisTick = millis(); // calculate delta time
 
     if (command != _output) {
-        auto dt = thisTick - _lastTick;
+        auto dt = thisTick - _lastUpdate;
         _output = limitSlew(flipped ? -command : command, _output, (int)(slewRate * dt));
         CrcLib::SetPwmOutput(pin, _output);
     }
 
-    _lastTick = thisTick;
+    _lastUpdate = thisTick;
 }
 
 void DriveTrain::init()
