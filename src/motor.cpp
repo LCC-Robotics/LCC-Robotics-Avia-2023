@@ -15,12 +15,15 @@ void PWM_Motor::update()
     if (!slewRate)
         return;
 
-    auto dt = millis() - _lastTick; // calculate delta time
-    _output = limitSlew(flipped ? -command : command, _output, (int)(slewRate * dt));
+    auto thisTick = millis(); // calculate delta time
 
     if (command != _output) {
+        auto dt = thisTick - _lastTick;
+        _output = limitSlew(flipped ? -command : command, _output, (int)(slewRate * dt));
         CrcLib::SetPwmOutput(pin, _output);
     }
+
+    _lastTick = thisTick;
 }
 
 void DriveTrain::init()
