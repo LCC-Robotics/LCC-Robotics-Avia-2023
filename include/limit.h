@@ -6,8 +6,8 @@
 
 #include "utils.h"
 
-#define PWM_LIMIT_POSITIVE 0, 127
-#define PWM_LIMIT_NEGATIVE -127, 0
+#define PWM_LIMIT_POSITIVE Range<>{0, 127}
+#define PWM_LIMIT_NEGATIVE Range<>{-127, 0}
 
 /**
  * @brief Stores a range (min, max)
