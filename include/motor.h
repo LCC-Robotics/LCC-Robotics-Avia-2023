@@ -6,10 +6,9 @@
 #define MOTOR_UPDATE_INTERVAL 20 // ms
 #define DEFAULT_SLEW_RATE 0.75
 
-/**
- * @brief Used for PWM motors such as the ones used for the drivetrain and servos.
- * https://github.com/purduesigbots/libblrs/blob/master/libmtrmgr/src/mtrmgr.c
- */
+
+ // https://github.com/purduesigbots/libblrs/blob/master/libmtrmgr/src/mtrmgr.c
+ // Used for PWM motors such as the ones used for the drivetrain and servos.
 struct PWM_Motor {
     unsigned char pin; // PWM pin
     int command = 0; // Value that we want to be set
@@ -19,48 +18,20 @@ struct PWM_Motor {
     int _output = 0; // Adjusted value that motor will be set to
     unsigned long _lastUpdate; // Millis
 
-    /**
-     * @brief Init pwm pin
-     */
-    void init();
-
-    /**
-     * @brief Updates output based on slewRate. Should be ran every MOTOR_UPDATE_INTERVAL
-     */
-    void update();
+    void init(); // Init pwm pin
+    void update(); // Updates output based on slewRate. Should be ran every MOTOR_UPDATE_INTERVAL
 };
 
-/**
- * @brief Manages motors of the drivetrain.
- */
+//  Manages motors of the drivetrain.
 struct DriveTrain {
     PWM_Motor FLMotor;
     PWM_Motor FRMotor;
     PWM_Motor BLMotor;
     PWM_Motor BRMotor;
 
-    /**
-     * @brief Calls init function of all motors.
-     */
-    void init();
-
-    /**
-     * @brief Calls update function all motors. Should be ran every MOTOR_UPDATE_INTERVAL.
-     */
-    void update();
-
-    /**
-     * @brief sets all motors to 0
-     */
-    void stop();
-
-    /**
-     * @brief Based on parameters updates motor command values.
-     *
-     * @param forwardChannel -127 to 127
-     * @param yawChannel -127 to 127
-     * @param strafeChannel -127 to 127
-     */
+    void init(); // Calls init function of all motors.
+    void update(); // Calls update function all motors. Should be ran every MOTOR_UPDATE_INTERVAL.
+    void stop(); // sets all motors to 0
     void moveHolonomic(int8_t forwardChannel, int8_t yawChannel, int8_t strafeChannel);
 };
 

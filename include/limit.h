@@ -6,45 +6,34 @@
 
 #include "utils.h"
 
-#define PWM_LIMIT_POSITIVE 0, 127
-#define PWM_LIMIT_NEGATIVE -127, 0
+#define PWM_LIMIT_POSITIVE Range<>{0, 127}
+#define PWM_LIMIT_NEGATIVE Range<>{-127, 0}
 
-/**
- * @brief Simple function which prevents robot from committing self die by clamping the raws between min and max when limit switch is activated
- *
- * @tparam T number type
- * @param activated is safety switch activated
- * @param raw raw input
- * @param min inclusive
- * @param max inclusive
- * @return T evaluated output
- */
-template <typename T>
-inline T safety(bool activated, T raw, T min, T max)
+// Stores a range (min, max)
+template <class T = int8_t>
+using Range = Pair<T, T>;
+
+
+// Simple function which prevents robot from committing self die by clamping the raws between min and max when limit switch is activated
+template <class T>
+inline T safety(bool activated, T raw, Range<T> range)
 {
     if (!activated)
         return raw;
-    return constrain(raw, min, max);
+    return constrain(raw, range.first, range.second);
 }
 
-/**
- * @brief Smooths out suddent motions
- * https://www.embeddedrelated.com/showarticle/646.php
- *
- * @tparam T number type
- * @param raw raw input
- * @param prev_out previous output value from function
- * @param max_change maxmimum allowed deviation of raw from prev_out
- * @return T evaluated output
- */
-template <typename T>
-inline T limitSlew(T raw, T prev_out, T max_change)
+
+// https://www.embeddedrelated.com/showarticle/646.php
+// Smooths out suddent motions
+template <class T>
+inline T limitSlew(T raw, T prev_out, T max_deviation)
 {
     T delta = raw - prev_out;
-    if (delta > max_change)
-        delta = max_change;
-    else if (delta < -max_change)
-        delta = -max_change;
+    if (delta > max_deviation)
+        delta = max_deviation;
+    else if (delta < -max_deviation)
+        delta = -max_deviation;
     return prev_out + delta;
 }
 
