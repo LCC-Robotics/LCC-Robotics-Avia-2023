@@ -1,6 +1,7 @@
 #ifndef __ROBOTICS_LCC_ROBOTICS_22_23_INC_MOTOR_H_
 #define __ROBOTICS_LCC_ROBOTICS_22_23_INC_MOTOR_H_
 
+#include <Arduino.h>
 #include <CrcLib.h>
 
 #define MOTOR_UPDATE_INTERVAL 20 // ms
@@ -16,7 +17,7 @@ struct PWM_Motor {
     float slewRate = DEFAULT_SLEW_RATE; // Limit slew
 
     int _output = 0; // Adjusted value that motor will be set to
-    unsigned long _lastUpdate; // Millis
+    unsigned long _lastUpdate = millis(); // Millis
 
     void init(); // Init pwm pin
     void update(); // Updates output based on slewRate. Should be ran every MOTOR_UPDATE_INTERVAL
