@@ -2,7 +2,6 @@
 #define __ROBOTICS_LCC_ROBOTICS_22_23_INCLUDE_LIMIT_H_
 
 #include <Arduino.h>
-#include <CrcLib.h>
 
 #include "utils.h"
 
