@@ -5,6 +5,8 @@
 .vscode/launch.json
 .vscode/ipch
 
+compile_commands.json
+
 # Local History for Visual Studio Code
 .history/
 
