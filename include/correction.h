@@ -3,8 +3,6 @@
 
 #include <Arduino.h>
 
-
-
 // https://www.teachmemicro.com/arduino-pid-control-tutorial/
 template <typename T = int>
 struct PID
