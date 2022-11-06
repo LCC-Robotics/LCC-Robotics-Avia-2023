@@ -1,7 +1,6 @@
 #ifndef __ROBOTICS_LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_
 #define __ROBOTICS_LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_
 
-#include <CrcLib.h>
 #include <stdint.h>
 
 #include "utils.h"

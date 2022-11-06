@@ -1,3 +1,5 @@
+#include <CrcLib.h>
+
 #include "sensor.h"
 
 using namespace Crc;
