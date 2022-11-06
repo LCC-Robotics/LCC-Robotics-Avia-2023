@@ -25,7 +25,11 @@ DriveTrain driveTrain = {
 void setup()
 {
     CrcLib::Initialize();
-    driveTrain.init();
+
+    CrcLib::InitializePwmOutput(CRC_PWM_1);
+    CrcLib::InitializePwmOutput(CRC_PWM_2);
+    CrcLib::InitializePwmOutput(CRC_PWM_3);
+    CrcLib::InitializePwmOutput(CRC_PWM_4);
 
     // recalculate motor output every MOTOR_UPDATE_INTERVAL
     timer.every(MOTOR_UPDATE_INTERVAL,

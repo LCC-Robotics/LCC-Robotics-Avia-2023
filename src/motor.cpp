@@ -5,11 +5,6 @@
 
 using namespace Crc;
 
-void PWM_Motor::init()
-{
-    CrcLib::InitializePwmOutput(pin);
-}
-
 void PWM_Motor::update()
 {
     if (!slewRate)
@@ -26,13 +21,6 @@ void PWM_Motor::update()
     _lastUpdate = thisTick;
 }
 
-void DriveTrain::init()
-{
-    FLMotor.init();
-    FRMotor.init();
-    BLMotor.init();
-    BRMotor.init();
-}
 
 void DriveTrain::update()
 {
