@@ -5,17 +5,12 @@
 
 #include "utils.h"
 
-#define PWM_LIMIT_POSITIVE Range<>{0, 127}
-#define PWM_LIMIT_NEGATIVE Range<>{-127, 0}
-
-// Stores a range (min, max)
-template <class T = int8_t>
-using Range = Pair<T, T>;
-
+#define PWM_LIMIT_POSITIVE Range<uint8_t>{0, 127}
+#define PWM_LIMIT_NEGATIVE Range<uint8_t>{-127, 0}
 
 // Simple function which prevents robot from committing self die by clamping the raws between min and max when limit switch is activated
 template <class T>
-inline T safety(bool activated, T raw, Range<T> range)
+inline T safety(bool activated, T raw, const Range<T>& range)
 {
     if (!activated)
         return raw;
