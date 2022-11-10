@@ -1,6 +1,6 @@
 # LCC Robotics 2023 Repository
 
-This is the repo used for the **LCC 2023** robot. 
+This is the repo used for LCC's robot for AVIA 2023, a robotics competition hosted by Crc Robotics. 
 
 ## Installation 
 
