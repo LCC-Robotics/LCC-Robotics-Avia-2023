@@ -6,7 +6,7 @@ This repo contains the code for LCC's robot for AVIA 2023, a robotics competitio
 
 The repo was orginally scaffolded using `vscode-arduino`, however it quickly proved to be a massive hassle due to fact that each team member has to create a custom configuration (which is time-consuming to make), as well as the difficulty (impossibility) it posed to collaboration. It is an absolute abomination of tool. `arduino-ide` is not any better either. Overall, most of the software tools that `Arduino` have made are pretty trash (perhaps with exception to `arduino-cli`). 
 
-As such, we transitioned to the `PlatformIO` framework because it allows for flexible, scalable, and platform-agnostic projects with minimal configuration. This transition proved to be absolutely worth it, and it has allowed for easy collaboration, easy hosting, as well as blessing the team with its easy building and uploading process. It has caused zero frustration (unlike `Arduino` tools), and we do not regret the transition the slightest.
+As such, we transitioned to the `PlatformIO` framework because it allows for flexible, scalable, and platform-agnostic projects with minimal configuration. This transition proved to be absolutely worth it, as it has blessed the team with its ease of use, whether it be in collaboration, hosting, building or uploading. It has caused zero frustration (unlike `Arduino` tools), and we do not regret the transition the slightest.
 
 ## Installation 
 
