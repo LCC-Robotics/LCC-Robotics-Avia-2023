@@ -5,11 +5,6 @@
 
 using namespace Crc;
 
-void PWM_Motor::init()
-{
-    CrcLib::InitializePwmOutput(pin);
-}
-
 void PWM_Motor::update()
 {
     if (!slewRate)
@@ -17,21 +12,14 @@ void PWM_Motor::update()
 
     auto thisTick = millis(); // calculate delta time
 
-    if (command != _output) {
+    if (command != _output)
+    {
         auto dt = thisTick - _lastUpdate;
         _output = limitSlew(flipped ? -command : command, _output, (int)(slewRate * dt));
         CrcLib::SetPwmOutput(pin, _output);
     }
 
     _lastUpdate = thisTick;
-}
-
-void DriveTrain::init()
-{
-    FLMotor.init();
-    FRMotor.init();
-    BLMotor.init();
-    BRMotor.init();
 }
 
 void DriveTrain::update()
@@ -53,11 +41,11 @@ void DriveTrain::stop()
 void DriveTrain::moveHolonomic(int8_t forwardChannel, int8_t yawChannel, int8_t strafeChannel)
 {
     FLMotor.command = constrain(forwardChannel - yawChannel - strafeChannel,
-        -128, 127); // Determines the power of the front left wheel
+                                -128, 127); // Determines the power of the front left wheel
     BLMotor.command = constrain(forwardChannel - yawChannel + strafeChannel,
-        -128, 127); // Determines the power of the front left wheel
+                                -128, 127); // Determines the power of the front left wheel
     FRMotor.command = constrain(forwardChannel + yawChannel + strafeChannel,
-        -128, 127); // Determines the power of the front left wheel
+                                -128, 127); // Determines the power of the front left wheel
     BRMotor.command = constrain(forwardChannel + yawChannel - strafeChannel,
-        -128, 127); // Determines the power of the right wheels
+                                -128, 127); // Determines the power of the right wheels
 }

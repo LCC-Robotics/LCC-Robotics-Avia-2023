@@ -9,4 +9,8 @@ struct Pair
     T2 second;
 };
 
+// Stores a range (min, max)
+template <class T = int>
+using Range = Pair<T, T>;
+
 #endif // __ROBOTICS_LCC_ROBOTICS_22_23_INC_UTILS_H_

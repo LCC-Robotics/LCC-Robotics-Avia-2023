@@ -3,16 +3,14 @@
 
 #include <Arduino.h>
 
-
-
 // https://www.teachmemicro.com/arduino-pid-control-tutorial/
 template <typename T = int>
 struct PID
 {
-    const T& Kp; // proportional constant
-    const T& Ki; // Tegral constant (s^-1)
-    const T& Kd; // derivative constant (s)
- 
+    const T &Kp; // proportional constant
+    const T &Ki; // Tegral constant (s^-1)
+    const T &Kd; // derivative constant (s)
+
     unsigned long _lastUpdate = millis(); // millis
     T _prevError = 0;
     T _cumError = 0; // (haha) error
