@@ -1,4 +1,4 @@
-#include <CrcLib.h>  // https://robocrc.atlassian.net/wiki/spaces/AR/pages/403767325/CrcLib+Functions+-+An+overview
+#include <CrcLib.h> // https://robocrc.atlassian.net/wiki/spaces/AR/pages/403767325/CrcLib+Functions+-+An+overview
 
 #include <Bounce2.h>       // https://thomasfredericks.github.io/Bounce2/files/index.html
 #include <arduino-timer.h> // https://github.com/contrem/arduino-timer
@@ -9,17 +9,14 @@
 
 #define FORWARD_CHANNEL ANALOG::JOYSTICK1_Y
 #define YAW_CHANNEL ANALOG::JOYSTICK1_X
-#define STRAFE_CHANNEL ANALOG::JOYSTICK2_X
 
 using namespace Crc;
 
 Timer<5, millis> timer;
 
-DriveTrain driveTrain = {
-    .FLMotor = {.pin = CRC_PWM_1},
-    .FRMotor = {.pin = CRC_PWM_2},
-    .BLMotor = {.pin = CRC_PWM_3},
-    .BRMotor = {.pin = CRC_PWM_4}};
+ArcadeDriveTrain driveTrain = {
+    .LMotor = {.pin = CRC_PWM_1},
+    .RMotor = {.pin = CRC_PWM_2}};
 
 void setup()
 {
@@ -54,8 +51,6 @@ void loop()
         return;
     }
 
-    driveTrain.moveHolonomic(
-        CrcLib::ReadAnalogChannel(FORWARD_CHANNEL),
-        CrcLib::ReadAnalogChannel(YAW_CHANNEL),
-        CrcLib::ReadAnalogChannel(STRAFE_CHANNEL));
+    driveTrain.move(CrcLib::ReadAnalogChannel(FORWARD_CHANNEL),
+                    CrcLib::ReadAnalogChannel(YAW_CHANNEL));
 }

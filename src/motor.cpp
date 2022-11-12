@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <CrcLib.h>
 
 #include "limit.h"
@@ -12,40 +13,28 @@ void PWM_Motor::update()
 
     auto thisTick = millis(); // calculate delta time
 
-    if (command != _output)
+    if (_command != _output)
     {
         auto dt = thisTick - _lastUpdate;
-        _output = limitSlew(flipped ? -command : command, _output, (int)(slewRate * dt));
+        _output = limitSlew(flipped ? -_command : _command, _output, (int)(slewRate * dt));
         CrcLib::SetPwmOutput(pin, _output);
     }
 
     _lastUpdate = thisTick;
 }
 
-void DriveTrain::update()
+void ArcadeDriveTrain::update() // Calls update function all motors. Should be ran every MOTOR_UPDATE_INTERVAL.
 {
-    FLMotor.update();
-    FRMotor.update();
-    BLMotor.update();
-    BRMotor.update();
-}
-
-void DriveTrain::stop()
+    LMotor.update();
+    RMotor.update();
+};
+void ArcadeDriveTrain::stop() // sets all motors to 0
 {
-    FLMotor.command = 0;
-    FRMotor.command = 0;
-    BLMotor.command = 0;
-    BRMotor.command = 0;
-}
-
-void DriveTrain::moveHolonomic(int8_t forwardChannel, int8_t yawChannel, int8_t strafeChannel)
+    LMotor.set(0);
+    RMotor.set(0);
+};
+void ArcadeDriveTrain::move(int8_t forwardChannel, int8_t yawChannel)
 {
-    FLMotor.command = constrain(forwardChannel - yawChannel - strafeChannel,
-                                -128, 127); // Determines the power of the front left wheel
-    BLMotor.command = constrain(forwardChannel - yawChannel + strafeChannel,
-                                -128, 127); // Determines the power of the front left wheel
-    FRMotor.command = constrain(forwardChannel + yawChannel + strafeChannel,
-                                -128, 127); // Determines the power of the front left wheel
-    BRMotor.command = constrain(forwardChannel + yawChannel - strafeChannel,
-                                -128, 127); // Determines the power of the right wheels
+    LMotor.set(constrain(forwardChannel - yawChannel, -128, 127)); // Determines the power of the left wheels
+    RMotor.set(constrain(forwardChannel + yawChannel, -128, 127)); // Determines the power of the right wheels
 }
