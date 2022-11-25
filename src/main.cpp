@@ -7,10 +7,12 @@
 #include "utils.h"
 #include "sensor.h"
 
+using namespace Crc;
+
 #define FORWARD_CHANNEL ANALOG::JOYSTICK1_Y
 #define YAW_CHANNEL ANALOG::JOYSTICK1_X
 
-using namespace Crc;
+const int elevator_heights[8] = {0, 6, 17, 38, 66, 102, 146, 190};
 
 Timer<5, millis> timer;
 

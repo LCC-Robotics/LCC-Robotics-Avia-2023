@@ -9,7 +9,7 @@
 
 // https://github.com/purduesigbots/libblrs/blob/master/libmtrmgr/src/mtrmgr.c
 // Used for PWM motors such as the ones used for the drivetrain and servos.
-struct PWM_Motor
+struct Motor
 {
     using Value = int;
 
@@ -28,8 +28,8 @@ struct PWM_Motor
 //  Manages motors of the drivetrain.
 struct ArcadeDriveTrain
 {
-    PWM_Motor LMotor;
-    PWM_Motor RMotor;
+    Motor LMotor;
+    Motor RMotor;
 
     void update(); // Calls update function all motors. Should be ran every MOTOR_UPDATE_INTERVAL.
     void stop(); // sets all motors to 0

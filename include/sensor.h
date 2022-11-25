@@ -41,6 +41,8 @@ struct LightSensor
 
 struct DistanceSensor
 {
+    
+
 };
 
 #endif // LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_

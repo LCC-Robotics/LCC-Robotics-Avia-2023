@@ -6,7 +6,7 @@
 
 using namespace Crc;
 
-void PWM_Motor::update()
+void Motor::update()
 {
     if (!slewRate)
         return;
