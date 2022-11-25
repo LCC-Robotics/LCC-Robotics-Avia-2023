@@ -21,31 +21,30 @@ void ColorSensor::init()
     CrcLib::SetDigitalOutput(d1, HIGH);
 }
 
-RGB_Freq ColorSensor::readRawColor()
+void ColorSensor::update()
 {
-    return RGB_Freq{
-        ColorSensor::readRawRedChannel(),
-        ColorSensor::readRawGreenChannel(),
-        ColorSensor::readRawBlueChannel()};
+    ColorSensor::getRawRedChannel(output.r);
+    ColorSensor::getRawGreenChannel(output.g);
+    ColorSensor::getRawBlueChannel(output.b);
 }
 
-unsigned long ColorSensor::readRawRedChannel()
+ void ColorSensor::getRawRedChannel(unsigned long& output)
 {
     CrcLib::SetDigitalOutput(d2, LOW);
     CrcLib::SetDigitalOutput(d3, LOW);
-    return pulseIn(out, LOW, timeout);
+    output = pulseIn(outPin, LOW, timeout);
 }
 
-unsigned long ColorSensor::readRawGreenChannel()
+ void ColorSensor::getRawGreenChannel(unsigned long &output)
 {
     CrcLib::SetDigitalOutput(d2, HIGH);
     CrcLib::SetDigitalOutput(d3, HIGH);
-    return pulseIn(out, LOW, timeout);
+    output = pulseIn(outPin, LOW, timeout);
 }
 
-unsigned long ColorSensor::readRawBlueChannel()
+ void ColorSensor::getRawBlueChannel(unsigned long& output)
 {
     CrcLib::SetDigitalOutput(d2, LOW);
     CrcLib::SetDigitalOutput(d3, HIGH);
-    return pulseIn(out, LOW, timeout);
+    output = pulseIn(outPin, LOW, timeout);
 }

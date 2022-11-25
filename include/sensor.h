@@ -18,20 +18,22 @@ struct ColorSensor
 {
     struct RGB_Freq
     {
-        unsigned long r, g, b;
+        unsigned long r = 0, g = 0, b = 0;
 
         static RGB_Freq fromRGB(uint8_t r, uint8_t g, uint8_t b);
     };
 
     unsigned long timeout = 200;
     uint8_t d0, d1, d2, d3;
-    uint8_t out;
+    uint8_t outPin;
+
+    RGB_Freq output;
 
     void init();
-    RGB_Freq readRawColor();
-    unsigned long readRawRedChannel();
-    unsigned long readRawGreenChannel();
-    unsigned long readRawBlueChannel();
+    void update();
+    void getRawRedChannel(unsigned long &output);
+    void getRawGreenChannel(unsigned long &output);
+    void getRawBlueChannel(unsigned long &output);
 };
 
 struct LightSensor
