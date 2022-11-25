@@ -32,6 +32,7 @@ void ColorSensor::update()
 {
     CrcLib::SetDigitalOutput(d2, LOW);
     CrcLib::SetDigitalOutput(d3, LOW);
+    delayMicroseconds(10);
     output = pulseIn(outPin, LOW, timeout);
 }
 
@@ -39,6 +40,7 @@ void ColorSensor::update()
 {
     CrcLib::SetDigitalOutput(d2, HIGH);
     CrcLib::SetDigitalOutput(d3, HIGH);
+    delayMicroseconds(10);
     output = pulseIn(outPin, LOW, timeout);
 }
 
@@ -46,5 +48,6 @@ void ColorSensor::update()
 {
     CrcLib::SetDigitalOutput(d2, LOW);
     CrcLib::SetDigitalOutput(d3, HIGH);
+    delayMicroseconds(10);
     output = pulseIn(outPin, LOW, timeout);
 }

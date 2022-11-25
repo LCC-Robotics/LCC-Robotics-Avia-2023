@@ -27,6 +27,7 @@ struct ColorSensor
     uint8_t d0, d1, d2, d3;
     uint8_t outPin;
 
+    unsigned long timeout = 100;
     RGB_Freq output;
 
     void init();
