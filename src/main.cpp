@@ -12,7 +12,7 @@ using namespace Crc;
 #define FORWARD_CHANNEL ANALOG::JOYSTICK1_Y
 #define YAW_CHANNEL ANALOG::JOYSTICK1_X
 
-const int elevator_heights[8] = {0, 6, 17, 38, 66, 102, 146, 190};
+const int elevator_heights[8] = {0, 6, 17, 38, 66, 102, 146, 190}; // cm
 
 Timer<5, millis> timer;
 

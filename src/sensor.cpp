@@ -6,7 +6,6 @@
 using namespace Crc;
 using RGB_Freq = ColorSensor::RGB_Freq;
 
-
 RGB_Freq RGB_Freq::fromRGB(uint8_t r, uint8_t g, uint8_t b)
 {
     return RGB_Freq{
@@ -51,3 +50,16 @@ void ColorSensor::update()
     delayMicroseconds(10);
     output = pulseIn(outPin, LOW, timeout);
 }
+
+void DistanceSensor::update()
+{
+    CrcLib::SetDigitalOutput(trigPin, LOW);
+    delayMicroseconds(2);
+    CrcLib::SetDigitalOutput(trigPin, HIGH);
+    delayMicroseconds(10);
+    CrcLib::SetDigitalOutput(trigPin, LOW);
+
+    // Calculating the distance
+    output = (float)(pulseIn(echoPin, HIGH, timeout)) * SPEED_OF_SOUND / 2;
+}
+
