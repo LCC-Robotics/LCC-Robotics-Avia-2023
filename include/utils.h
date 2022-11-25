@@ -1,5 +1,5 @@
-#ifndef __ROBOTICS_LCC_ROBOTICS_22_23_INC_UTILS_H_
-#define __ROBOTICS_LCC_ROBOTICS_22_23_INC_UTILS_H_
+#ifndef LCC_ROBOTICS_22_23_INCLUDE_UTILS_H_
+#define LCC_ROBOTICS_22_23_INCLUDE_UTILS_H_
 
 // Stripped down and simple implementation of std::pair
 template <class T1, class T2>
@@ -13,4 +13,4 @@ struct Pair
 template <class T = int>
 using Range = Pair<T, T>;
 
-#endif // __ROBOTICS_LCC_ROBOTICS_22_23_INC_UTILS_H_
+#endif // LCC_ROBOTICS_22_23_INCLUDE_UTILS_H_

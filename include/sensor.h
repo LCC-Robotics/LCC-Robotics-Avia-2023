@@ -1,5 +1,5 @@
-#ifndef __ROBOTICS_LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_
-#define __ROBOTICS_LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_
+#ifndef LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_
+#define LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_
 
 #include <stdint.h>
 
@@ -34,8 +34,13 @@ struct ColorSensor
     unsigned long readRawBlueChannel();
 };
 
+struct LightSensor
+{
+
+};
+
 struct DistanceSensor
 {
 };
 
-#endif // __ROBOTICS_LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_
+#endif // LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_

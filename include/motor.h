@@ -1,5 +1,5 @@
-#ifndef __ROBOTICS_LCC_ROBOTICS_22_23_INC_MOTOR_H_
-#define __ROBOTICS_LCC_ROBOTICS_22_23_INC_MOTOR_H_
+#ifndef LCC_ROBOTICS_22_23_INCLUDE_MOTOR_H_
+#define LCC_ROBOTICS_22_23_INCLUDE_MOTOR_H_
 
 #include <Arduino.h>
 #include <CrcLib.h>
@@ -36,4 +36,4 @@ struct ArcadeDriveTrain
     void move(int8_t forwardChannel, int8_t yawChannel);
 };
 
-#endif // __ROBOTICS_LCC_ROBOTICS_22_23_INC_MOTOR_H_
+#endif // LCC_ROBOTICS_22_23_INCLUDE_MOTOR_H_

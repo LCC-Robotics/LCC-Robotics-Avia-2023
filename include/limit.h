@@ -1,5 +1,5 @@
-#ifndef __ROBOTICS_LCC_ROBOTICS_22_23_INCLUDE_LIMIT_H_
-#define __ROBOTICS_LCC_ROBOTICS_22_23_INCLUDE_LIMIT_H_
+#ifndef LCC_ROBOTICS_22_23_INCLUDE_LIMIT_H_
+#define LCC_ROBOTICS_22_23_INCLUDE_LIMIT_H_
 
 #include <Arduino.h>
 
@@ -31,5 +31,4 @@ inline T limitSlew(T raw, T prev_out, T max_deviation)
     return prev_out + delta;
 }
 
-#endif // __ROBOTICS_LCC_ROBOTICS_22_23_INCLUDE_LIMIT_H_
-
+#endif // LCC_ROBOTICS_22_23_INCLUDE_LIMIT_H_
