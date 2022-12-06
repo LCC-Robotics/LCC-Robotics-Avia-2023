@@ -16,20 +16,26 @@ const int elevator_heights[8] = {0, 6, 17, 38, 66, 102, 146, 190}; // cm
 
 Timer<5, millis> timer;
 
+
 ArcadeDriveTrain driveTrain = {
-    .LMotor = {.pin = CRC_PWM_1},
-    .RMotor = {.pin = CRC_PWM_2}};
+    .LMotor = {.pin = CRC_PWM_5, .flipped = false},
+    .RMotor = {.pin = CRC_PWM_7, .flipped = true}
+};
 
 void setup()
 {
+    Serial.begin(9600);
+
     CrcLib::Initialize();
 
     CrcLib::InitializePwmOutput(CRC_PWM_1);
     CrcLib::InitializePwmOutput(CRC_PWM_2);
-    CrcLib::InitializePwmOutput(CRC_PWM_3);
-    CrcLib::InitializePwmOutput(CRC_PWM_4);
+
+    CrcLib::InitializePwmOutput(CRC_PWM_5);
+    CrcLib::InitializePwmOutput(CRC_PWM_7);
 
     // recalculate motor output every MOTOR_UPDATE_INTERVAL
+    // still stupid proof
     timer.every(MOTOR_UPDATE_INTERVAL,
                 [](void *) -> bool
                 {
@@ -44,6 +50,11 @@ void setup()
 
 void loop()
 {
+
+    Serial.print("Left: ");
+    Serial.println(driveTrain.LMotor._command);
+    Serial.print("Right: ");
+    Serial.println(driveTrain.RMotor._command);
     timer.tick();
     CrcLib::Update();
 

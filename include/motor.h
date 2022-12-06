@@ -9,6 +9,8 @@
 
 // https://github.com/purduesigbots/libblrs/blob/master/libmtrmgr/src/mtrmgr.c
 // Used for PWM motors such as the ones used for the drivetrain and servos.
+
+// stupid proof wooo
 struct Motor
 {
     using Value = int;
