@@ -28,6 +28,6 @@ Subject line should contain a succinct description of the change.
 #### \<body\> text
 If the commit is not a minor change, a body text that explains the changes in further detail is encouraged. 
 
-- Like in \<subject\> use imperative, present tense “change”, not “changed” or “changes”.
+- Like in \<subject\>, use imperative present tense “change”, not “changed” or “changes”.
 - Include motivation for the change and contrasts with previous behavior.
 
