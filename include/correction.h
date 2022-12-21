@@ -16,19 +16,4 @@ struct PID {
     float calculate(float input, float setPoint);
 };
 
-float PID::calculate(float input, float setPoint)
-{
-    unsigned long thisTick = millis();
-    float dt = _lastUpdate - thisTick;
-
-    float error = setPoint - input;
-    _cumError += error * dt;
-    float rateError = (error - _prevError) / dt;
-
-    _lastUpdate = thisTick;
-    _prevError = error;
-
-    return Kp * error + Ki * _cumError + Kd * rateError;
-}
-
 #endif // LCC_ROBOTICS_22_23_INCLUDE_CORRECTION_H_
