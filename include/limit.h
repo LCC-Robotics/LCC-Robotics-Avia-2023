@@ -6,8 +6,8 @@
 #include "utils.h"
 
 // clang-format off
-#define PWM_LIMIT_POSITIVE Range<uint8_t>{0, 127}
-#define PWM_LIMIT_NEGATIVE Range<uint8_t>{-127, 0}
+#define PWM_LIMIT_POSITIVE Range<int8_t>{0, 127}
+#define PWM_LIMIT_NEGATIVE Range<int8_t>{-127, 0}
 // clang-format on
 
 // Simple function which prevents robot from committing self die by clamping the raws between min and max when limit switch is activated

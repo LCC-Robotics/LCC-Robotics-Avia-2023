@@ -32,7 +32,7 @@ void ArcadeDriveTrain::stop() // sets all motors to 0
     LMotor.set(0);
     RMotor.set(0);
 };
-void ArcadeDriveTrain::move(int8_t forwardChannel, int8_t yawChannel)
+void ArcadeDriveTrain::move(uint8_t forwardChannel, uint8_t yawChannel)
 {
     LMotor.set(constrain(forwardChannel - yawChannel, -127, 127)); // Determines the power of the left wheels
     RMotor.set(constrain(forwardChannel + yawChannel, -127, 127)); // Determines the power of the right wheels

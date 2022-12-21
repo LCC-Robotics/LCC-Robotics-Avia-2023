@@ -33,7 +33,7 @@ struct ArcadeDriveTrain {
 
     void update(); // Calls update function all motors. Should be ran every MOTOR_UPDATE_INTERVAL.
     void stop(); // sets all motors to 0
-    void move(int8_t forwardChannel, int8_t yawChannel);
+    void move(uint8_t forwardChannel, uint8_t yawChannel);
 };
 
 #endif // LCC_ROBOTICS_22_23_INCLUDE_MOTOR_H_

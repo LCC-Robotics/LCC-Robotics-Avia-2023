@@ -4,28 +4,26 @@
 #include <Arduino.h>
 
 // https://www.teachmemicro.com/arduino-pid-control-tutorial/
-template <typename T = int>
 struct PID {
-    const T& Kp; // proportional constant
-    const T& Ki; // Tegral constant (s^-1)
-    const T& Kd; // derivative constant (s)
+    const float& Kp; // proportional constant
+    const float& Ki; // Tegral constant (s^-1)
+    const float& Kd; // derivative constant (s)
 
     unsigned long _lastUpdate = millis(); // millis
-    T _prevError = 0;
-    T _cumError = 0; // (haha) error
+    float _prevError = 0;
+    float _cumError = 0; // (haha) error
 
-    T calculate(T input, T setPoint);
+    float calculate(float input, float setPoint);
 };
 
-template <class T>
-T PID<T>::calculate(T input, T setPoint)
+float PID::calculate(float input, float setPoint)
 {
     unsigned long thisTick = millis();
-    T dt = _lastUpdate - thisTick;
+    float dt = _lastUpdate - thisTick;
 
-    T error = setPoint - input;
+    float error = setPoint - input;
     _cumError += error * dt;
-    T rateError = (error - _prevError) / dt;
+    float rateError = (error - _prevError) / dt;
 
     _lastUpdate = thisTick;
     _prevError = error;
