@@ -2,17 +2,13 @@
 
 This repo contains the code for LCC's robot for AVIA 2023, a robotics competition hosted by CRC Robotics. 
 
-## PlatformIO
+It is scaffolded using the `PlatformIO` framework with `megaatmega2560` as its target. We have decided to use `PlatformIO` because it allows for flexible and platform-agnostic projections with minimal configuration. 
 
-The repo was orginally scaffolded using `vscode-arduino`, however it quickly proved to be a massive hassle due to fact that each team member has to create a custom configuration (which is time-consuming to make), as well as the difficulty (impossibility) it posed to collaboration. It is an absolute abomination of tool. `arduino-ide` is not any better either. Overall, most of the software tools that `Arduino` have made are pretty trash (perhaps with exception to `arduino-cli`). 
-
-As such, we transitioned to the `PlatformIO` framework because it allows for flexible, scalable, and platform-agnostic projects with minimal configuration. This transition proved to be absolutely worth it, as it has blessed the team with its ease of use, whether it be in collaboration, hosting, building or uploading. It has caused zero frustration (unlike `Arduino` tools), and we do not regret the transition the slightest.
-
-## Installation 
+## Cloning the Repo 
 
 Clone this repository using `git`:
 
-    git clone https://github.com/A-Blve/LCC-Robotics-22-23.git
+    git clone https://github.com/LCC-Robotics/LCC-Robotics-22-23.git
 
 ## Build and Upload
 
