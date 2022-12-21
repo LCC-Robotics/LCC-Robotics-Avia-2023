@@ -1,25 +1,24 @@
 #include <CrcLib.h> // https://robocrc.atlassian.net/wiki/spaces/AR/pages/403767325/CrcLib+Functions+-+An+overview
 
-#include <Bounce2.h>       // https://thomasfredericks.github.io/Bounce2/files/index.html
+#include <Bounce2.h> // https://thomasfredericks.github.io/Bounce2/files/index.html
 #include <arduino-timer.h> // https://github.com/contrem/arduino-timer
 
 #include "motor.h"
-#include "utils.h"
 #include "sensor.h"
+#include "utils.h"
 
 using namespace Crc;
 
 #define FORWARD_CHANNEL ANALOG::JOYSTICK1_Y
 #define YAW_CHANNEL ANALOG::JOYSTICK1_X
 
-const int elevator_heights[8] = {0, 6, 17, 38, 66, 102, 146, 190}; // cm
+const int elevator_heights[8] = { 0, 6, 17, 38, 66, 102, 146, 190 }; // cm
 
 Timer<5, millis> timer;
 
-
 ArcadeDriveTrain driveTrain = {
-    .LMotor = {.pin = CRC_PWM_5, .flipped = false},
-    .RMotor = {.pin = CRC_PWM_7, .flipped = true}
+    .LMotor = { .pin = CRC_PWM_5, .flipped = false },
+    .RMotor = { .pin = CRC_PWM_7, .flipped = true }
 };
 
 void setup()
@@ -37,13 +36,12 @@ void setup()
     // recalculate motor output every MOTOR_UPDATE_INTERVAL
     // still stupid proof
     timer.every(MOTOR_UPDATE_INTERVAL,
-                [](void *) -> bool
-                {
-                    driveTrain.update();
-                    return true;
-                });
+        [](void*) -> bool {
+            driveTrain.update();
+            return true;
+        });
 
-#ifdef DEBUG            // only start serial if in debug mode (serial can affect performance)
+#ifdef DEBUG // only start serial if in debug mode (serial can affect performance)
     Serial.begin(BAUD); // macro defined in platformio.ini
 #endif
 }
@@ -65,5 +63,5 @@ void loop()
     }
 
     driveTrain.move(CrcLib::ReadAnalogChannel(FORWARD_CHANNEL),
-                    CrcLib::ReadAnalogChannel(YAW_CHANNEL));
+        CrcLib::ReadAnalogChannel(YAW_CHANNEL));
 }

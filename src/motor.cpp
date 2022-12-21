@@ -13,8 +13,7 @@ void Motor::update()
 
     auto thisTick = millis(); // calculate delta time
 
-    if (_command != _output)
-    {
+    if (_command != _output) {
         auto dt = thisTick - _lastUpdate;
         _output = limitSlew(flipped ? -_command : _command, _output, (int)(slewRate * dt));
         CrcLib::SetPwmOutput(pin, _output);

@@ -3,8 +3,7 @@
 
 // Stripped down and simple implementation of std::pair
 template <class T1, class T2>
-struct Pair
-{
+struct Pair {
     T1 first;
     T2 second;
 };

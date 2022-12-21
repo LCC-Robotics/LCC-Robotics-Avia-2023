@@ -16,10 +16,8 @@
 
 #define SPEED_OF_SOUND 0.034 // m/s
 
-struct ColorSensor
-{
-    struct RGB_Freq
-    {
+struct ColorSensor {
+    struct RGB_Freq {
         unsigned long r = 0, g = 0, b = 0;
 
         static RGB_Freq fromRGB(uint8_t r, uint8_t g, uint8_t b);
@@ -33,22 +31,20 @@ struct ColorSensor
 
     void init();
     void update();
-    void getRawRedChannel(unsigned long &output);
-    void getRawGreenChannel(unsigned long &output);
-    void getRawBlueChannel(unsigned long &output);
+    void getRawRedChannel(unsigned long& output);
+    void getRawGreenChannel(unsigned long& output);
+    void getRawBlueChannel(unsigned long& output);
 };
 
-struct LightSensor
-{
+struct LightSensor {
 };
 
-struct DistanceSensor
-{
+struct DistanceSensor {
     uint8_t echoPin;
     uint8_t trigPin;
 
     unsigned long timeout = 100;
-    float output; //cm
+    float output; // cm
 
     void update();
 };

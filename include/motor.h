@@ -11,16 +11,15 @@
 // Used for PWM motors such as the ones used for the drivetrain and servos.
 
 // stupid proof wooo
-struct Motor
-{
+struct Motor {
     using Value = int;
 
-    uint8_t pin;                        // PWM pin
-    bool flipped = false;               // Programmatically flips motor
+    uint8_t pin; // PWM pin
+    bool flipped = false; // Programmatically flips motor
     float slewRate = DEFAULT_SLEW_RATE; // Limit slew
 
-    Value _command = 0;                  // Value that we want to be set
-    Value _output = 0;                    // Adjusted value that motor will be set to
+    Value _command = 0; // Value that we want to be set
+    Value _output = 0; // Adjusted value that motor will be set to
     unsigned long _lastUpdate = millis(); // Millis
 
     void update(); // Updates output based on slewRate. Should be ran every MOTOR_UPDATE_INTERVAL
@@ -28,8 +27,7 @@ struct Motor
 };
 
 //  Manages motors of the drivetrain.
-struct ArcadeDriveTrain
-{
+struct ArcadeDriveTrain {
     Motor LMotor;
     Motor RMotor;
 

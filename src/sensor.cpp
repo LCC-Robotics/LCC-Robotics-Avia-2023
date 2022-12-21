@@ -8,10 +8,11 @@ using RGB_Freq = ColorSensor::RGB_Freq;
 
 RGB_Freq RGB_Freq::fromRGB(uint8_t r, uint8_t g, uint8_t b)
 {
-    return RGB_Freq{
+    return RGB_Freq {
         (unsigned long)map(r, 0, 255, RED_FREQ_LOWER, RED_FREQ_UPPER),
         (unsigned long)map(g, 0, 255, GREEN_FREQ_LOWER, GREEN_FREQ_UPPER),
-        (unsigned long)map(b, 0, 255, BLUE_FREQ_LOWER, BLUE_FREQ_UPPER)};
+        (unsigned long)map(b, 0, 255, BLUE_FREQ_LOWER, BLUE_FREQ_UPPER)
+    };
 }
 
 void ColorSensor::init()
@@ -27,7 +28,7 @@ void ColorSensor::update()
     ColorSensor::getRawBlueChannel(output.b);
 }
 
- void ColorSensor::getRawRedChannel(unsigned long& output)
+void ColorSensor::getRawRedChannel(unsigned long& output)
 {
     CrcLib::SetDigitalOutput(d2, LOW);
     CrcLib::SetDigitalOutput(d3, LOW);
@@ -35,7 +36,7 @@ void ColorSensor::update()
     output = pulseIn(outPin, LOW, timeout);
 }
 
- void ColorSensor::getRawGreenChannel(unsigned long &output)
+void ColorSensor::getRawGreenChannel(unsigned long& output)
 {
     CrcLib::SetDigitalOutput(d2, HIGH);
     CrcLib::SetDigitalOutput(d3, HIGH);
@@ -43,7 +44,7 @@ void ColorSensor::update()
     output = pulseIn(outPin, LOW, timeout);
 }
 
- void ColorSensor::getRawBlueChannel(unsigned long& output)
+void ColorSensor::getRawBlueChannel(unsigned long& output)
 {
     CrcLib::SetDigitalOutput(d2, LOW);
     CrcLib::SetDigitalOutput(d3, HIGH);
@@ -62,4 +63,3 @@ void DistanceSensor::update()
     // Calculating the distance
     output = (float)(pulseIn(echoPin, HIGH, timeout)) * SPEED_OF_SOUND / 2;
 }
-
