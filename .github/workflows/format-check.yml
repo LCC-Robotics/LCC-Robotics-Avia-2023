@@ -1,0 +1,33 @@
+name: clang-format Check
+
+on: 
+  push:
+    paths:
+      - "**.h"
+      - "**.cpp"
+  pull_request: 
+    paths:
+        - "**.h"
+        - "**.cpp"
+  workflow_dispatch:
+
+jobs:
+  clang-format:
+    name: Format Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        paths:
+          - "src"
+          - "include"
+          - "test"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run clang-format
+        uses: jidicula/clang-format-action@v4.9.0
+        with: 
+          clang-format-version: 15
+          check-path: ${{ matrix.paths }}
+
