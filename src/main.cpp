@@ -23,8 +23,6 @@ ArcadeDriveTrain driveTrain = {
 
 void setup()
 {
-    Serial.begin(9600);
-
     CrcLib::Initialize();
 
     CrcLib::InitializePwmOutput(CRC_PWM_1);
@@ -48,11 +46,6 @@ void setup()
 
 void loop()
 {
-
-    Serial.print("Left: ");
-    Serial.println(driveTrain.LMotor._command);
-    Serial.print("Right: ");
-    Serial.println(driveTrain.RMotor._command);
     timer.tick();
     CrcLib::Update();
 
