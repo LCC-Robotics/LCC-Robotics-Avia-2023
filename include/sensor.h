@@ -1,7 +1,7 @@
 #ifndef LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_
 #define LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_
 
-#include <Arduino.h>
+#include <stdint.h>
 
 #include "utils.h"
 
@@ -11,7 +11,7 @@ class DistanceSensor {
 public:
     explicit DistanceSensor(uint8_t echoPin, uint8_t trigPin);
     void update();
-    inline const double& get() const { return output; };
+    [[nodiscard]] inline const double& get() const { return output; };
 
 private:
     uint8_t echoPin, trigPin;
