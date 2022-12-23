@@ -1,7 +1,7 @@
 #ifndef LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_
 #define LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_
 
-#include <stdint.h>
+#include <Arduino.h>
 
 #include "utils.h"
 
@@ -16,37 +16,44 @@
 
 #define SPEED_OF_SOUND 0.034 // m/s
 
-struct ColorSensor {
+class DistanceSensor {
+public:
+    explicit DistanceSensor(uint8_t echoPin, uint8_t trigPin);
+    void update();
+    inline const double& get() const { return output; };
+
+private:
+    uint8_t echoPin, trigPin;
+    unsigned long timeout = 100;
+    double output {}; // cm
+};
+
+// ===========================
+
+class ColorSensor {
+public:
     struct RGB_Freq {
         unsigned long r = 0, g = 0, b = 0;
 
-        static RGB_Freq fromRGB(uint8_t r, uint8_t g, uint8_t b);
+        static RGB_Freq fromRGB(uint8_t red, uint8_t green, uint8_t blue);
     };
 
-    uint8_t d0, d1, d2, d3;
+    explicit ColorSensor(uint8_t s0, uint8_t s1, uint8_t s2, uint8_t s3, uint8_t outPin, unsigned long timeout = 100);
+    void init() const;
+    void update();
+    unsigned long getRawRedChannel() const;
+    unsigned long getRawGreenChannel() const;
+    unsigned long getRawBlueChannel() const;
+    inline const RGB_Freq& get() const { return output; };
+
+private:
+    uint8_t s0, s1, s2, s3;
     uint8_t outPin;
-
-    unsigned long timeout = 100;
-    RGB_Freq output;
-
-    void init();
-    void update();
-    void getRawRedChannel(unsigned long& output);
-    void getRawGreenChannel(unsigned long& output);
-    void getRawBlueChannel(unsigned long& output);
+    unsigned long timeout;
+    RGB_Freq output {};
 };
 
-struct LightSensor {
-};
-
-struct DistanceSensor {
-    uint8_t echoPin;
-    uint8_t trigPin;
-
-    unsigned long timeout = 100;
-    float output; // cm
-
-    void update();
+class LightSensor {
 };
 
 #endif // LCC_ROBOTICS_22_23_INCLUDE_SENSOR_H_

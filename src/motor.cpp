@@ -6,21 +6,32 @@
 
 using namespace Crc;
 
+Motor::Motor(uint8_t pin, bool flipped, float slewRate)
+    : pin { pin }
+    , flipped { flipped }
+    , slewRate { slewRate } {};
+
 void Motor::update()
 {
-    if (!slewRate)
+    if (slewRate == 0.0)
         return;
 
     auto thisTick = millis(); // calculate delta time
 
-    if (_command != _output) {
-        auto dt = thisTick - _lastUpdate;
-        _output = limitSlew(flipped ? -_command : _command, _output, (int)(slewRate * dt));
-        CrcLib::SetPwmOutput(pin, _output);
+    if (command != output) {
+        int dt = static_cast<int>(thisTick - lastUpdate);
+        output = limitSlew(flipped ? -command : command, output, (int)(slewRate * dt));
+        CrcLib::SetPwmOutput(pin, static_cast<char>(output));
     }
 
-    _lastUpdate = thisTick;
+    lastUpdate = thisTick;
 }
+
+// ================
+
+ArcadeDriveTrain::ArcadeDriveTrain(Motor LMotor, Motor RMotor)
+    : LMotor { LMotor }
+    , RMotor { RMotor } {};
 
 void ArcadeDriveTrain::update() // Calls update function all motors. Should be ran every MOTOR_UPDATE_INTERVAL.
 {

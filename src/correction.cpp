@@ -1,16 +1,21 @@
 #include "correction.h"
 
+PID::PID(const float& Kp, const float& Ki, const float& Kd)
+    : Kp { Kp }
+    , Ki { Ki }
+    , Kd { Kd } {};
+
 float PID::calculate(float input, float setPoint)
 {
     unsigned long thisTick = millis();
-    float dt = _lastUpdate - thisTick;
+    auto dt = static_cast<float>(lastUpdate - thisTick);
 
     float error = setPoint - input;
-    _cumError += error * dt;
-    float rateError = (error - _prevError) / dt;
+    cumError += error * dt;
+    float rateError = (error - prevError) / dt;
 
-    _lastUpdate = thisTick;
-    _prevError = error;
+    lastUpdate = thisTick;
+    prevError = error;
 
-    return Kp * error + Ki * _cumError + Kd * rateError;
+    return Kp * error + Ki * cumError + Kd * rateError;
 }

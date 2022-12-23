@@ -4,16 +4,19 @@
 #include <Arduino.h>
 
 // https://www.teachmemicro.com/arduino-pid-control-tutorial/
-struct PID {
+class PID {
+public:
+    explicit PID(const float& Kp, const float& Ki, const float& Kd);
+    float calculate(float input, float setPoint);
+
+private:
     const float& Kp; // proportional constant
     const float& Ki; // Tegral constant (s^-1)
     const float& Kd; // derivative constant (s)
 
-    unsigned long _lastUpdate = millis(); // millis
-    float _prevError = 0;
-    float _cumError = 0; // (haha) error
-
-    float calculate(float input, float setPoint);
+    unsigned long lastUpdate = millis(); // millis
+    float prevError = 0;
+    float cumError = 0; // (haha) error
 };
 
 #endif // LCC_ROBOTICS_22_23_INCLUDE_CORRECTION_H_

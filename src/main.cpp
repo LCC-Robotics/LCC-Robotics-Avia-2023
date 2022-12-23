@@ -16,10 +16,9 @@ const int elevator_heights[8] = { 0, 6, 17, 38, 66, 102, 146, 190 }; // cm
 
 Timer<5, millis> timer;
 
-ArcadeDriveTrain driveTrain = {
-    .LMotor = { .pin = CRC_PWM_5, .flipped = false },
-    .RMotor = { .pin = CRC_PWM_7, .flipped = true }
-};
+ArcadeDriveTrain driveTrain(
+    Motor(CRC_PWM_5, false),
+    Motor(CRC_PWM_6, true));
 
 void setup()
 {
