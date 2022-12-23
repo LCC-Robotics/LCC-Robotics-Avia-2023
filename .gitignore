@@ -1,6 +1,8 @@
-.pio
-.cache
+.pio/
+.cache/
 compile_commands.json
+
+.idea/
 
 .vscode/*
 !.vscode/tasks.json
