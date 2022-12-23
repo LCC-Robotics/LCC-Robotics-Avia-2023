@@ -1,4 +1,6 @@
 .pio
+.cache
+compile_commands.json
 
 .vscode/*
 !.vscode/settings.json
