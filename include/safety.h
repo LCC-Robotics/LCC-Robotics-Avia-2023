@@ -6,16 +6,19 @@
 #include "utils.h"
 
 // clang-format off
-constexpr Range<int> PWM_LIMIT_POSITIVE{0, 127};
-constexpr Range<int> PWM_LIMIT_NEGATIVE {-127, 0};
+template <typename T = int8_t>
+constexpr Range<T> PWM_LIMIT_POSITIVE{0, 127};
+
+template <typename T = int8_t>
+constexpr Range<T> PWM_LIMIT_NEGATIVE {-127, 0};
 // clang-format on
 
-// Simple function which prevents robot from committing self die by clamping the raws between min and max when limit switch is activated
+// Simple function which prevents robot from committing self die by clamping the raws between lower and upper when limit switch is activated
 inline int safety(bool activated, int raw, const Range<int>& range)
 {
     if (!activated)
         return raw;
-    return constrain(raw, range.first, range.second);
+    return constrain(raw, range.lower, range.upper);
 }
 
 // https://www.embeddedrelated.com/showarticle/646.php
