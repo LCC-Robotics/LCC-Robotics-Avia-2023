@@ -1,6 +1,4 @@
 #include <CrcLib.h> // https://robocrc.atlassian.net/wiki/spaces/AR/pages/403767325/CrcLib+Functions+-+An+overview
-
-#include <Bounce2.h> // https://thomasfredericks.github.io/Bounce2/files/index.html
 #include <arduino-timer.h> // https://github.com/contrem/arduino-timer
 
 #include "motor.h"
