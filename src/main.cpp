@@ -96,7 +96,7 @@ void loop()
 {
     CrcLib::Update();
 
-    timer.tick();
+    timer.tick<void>();
     elevatorEncoder.update();
 
     // Check if commands are valid
