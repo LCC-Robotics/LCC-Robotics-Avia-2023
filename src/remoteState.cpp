@@ -29,7 +29,8 @@ int8_t RState::operator[](ANALOG channel) const
     case ANALOG::JOYSTICK2_Y: return joystick2Y;
     case ANALOG::GACHETTE_R: return gachetteD;
     case ANALOG::GACHETTE_L: return gachetteG;
-    case ANALOG::NONE: return 0;
+    case ANALOG::NONE:
+    default: return 0;
     }
 }
 
@@ -51,6 +52,7 @@ bool RState::operator[](BUTTON button) const
     case BUTTON::LOGO: return logo;
     case BUTTON::HATL: return hatL;
     case BUTTON::HATR: return hatR;
-    case BUTTON::NONE: return false;
+    case BUTTON::NONE:
+    default: return false;
     }
 }
