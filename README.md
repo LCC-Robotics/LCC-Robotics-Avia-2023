@@ -2,7 +2,7 @@
 
 This repo contains the code for LCC's robot for AVIA 2023, a robotics competition hosted by [CRC Robotics](https://robo-crc.ca/). 
 
-It is scaffolded using the `PlatformIO` framework with `megaatmega2560` as its target. We have decided to use `PlatformIO` because it allows for flexible and platform-agnostic projections with minimal configuration. 
+Our codebase is scaffolded using the `PlatformIO` framework with `megaatmega2560` as its target. We have decided to use `PlatformIO` because it allows for flexible and platform-agnostic projections with minimal configuration. 
 
 ## Cloning the Repo 
 
