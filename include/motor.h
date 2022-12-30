@@ -3,7 +3,12 @@
 
 #include <stdint.h>
 
+#include "utils.h"
+
 #define DEFAULT_SLEW_RATE 0.75
+
+template <typename T = int8_t>
+constexpr Range<T> PWM_MOTOR_BOUNDS { -127, 127 };
 
 // https://github.com/purduesigbots/libblrs/blob/master/libmtrmgr/src/mtrmgr.c
 // Used for PWM motors such as the ones used for the drivetrain and servos.
