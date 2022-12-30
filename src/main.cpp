@@ -29,9 +29,10 @@ using namespace Crc;
 #define ENCODER_STEPS 30
 
 #define LINEAR_SLIDE_STAGES 3
-#define LINEAR_SLIDE_SPOOL_DIAMETER 20.0 // mm
+#define LINEAR_SLIDE_SPOOL_DIAMETER 20.0f // mm
 #define LINEAR_SLIDE_LEVELS 8
 
+constexpr Range<float> LINEAR_SLIDE_RANGE { 50.0, 2000.0 };
 constexpr float LINEAR_SLIDE_ENCODER_STEP_SIZE = LINEAR_SLIDE_SPOOL_DIAMETER * LINEAR_SLIDE_STAGES * PI / ENCODER_STEPS; // mm - distance travelled per step of rotary encoder
 const float LINEAR_SLIDE_HEIGHTS[8] = { 0.0, 60.0, 170.0, 380.0, 660.0, 1020.0, 1460.0, 1900.0 }; // mm
 
@@ -57,8 +58,8 @@ RotaryEncoder<float> elevatorEncoder {
 
 LinearSlide elevator {
     Motor(CRC_PWM_7),
-    PID(1.0, 1.0, 1.0, Range<float> { -127, 127 }),
-    Range<float> { 0.0, 2000.0 },
+    PID(1.0, 1.0, 1.0, PWM_MOTOR_BOUNDS<float>),
+    LINEAR_SLIDE_RANGE,
     []() -> float {
         return elevatorEncoder.getVal();
     }
