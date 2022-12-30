@@ -8,9 +8,9 @@ PID::PID(const float kp, const float ki, const float kd, const Range<float> boun
 {
 }
 
-float PID::calculate(float setPoint, float millis)
+float PID::calculate(float currPoint, float millis)
 {
-    float error = m_target - setPoint;
+    float error = m_targetPoint - currPoint;
 
     float integral = m_cumError + error * millis;
     float derivative = (error - m_prevError) / millis;

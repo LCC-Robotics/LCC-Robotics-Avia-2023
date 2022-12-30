@@ -10,9 +10,9 @@ class PID {
 public:
     explicit PID(float kp, float ki, float kd, Range<float> bounds);
 
-    float calculate(float setPoint, float millis); // millis in millis
-    inline float getTarget() const { return m_target; }
-    inline void setTarget(float v) { m_target = v; }
+    float calculate(float currPoint, float millis); // millis in millis
+    inline float getTarget() const { return m_targetPoint; }
+    inline void setTarget(float v) { m_targetPoint = v; }
 
 private:
     const float m_kp; // proportional constant
@@ -22,7 +22,7 @@ private:
     float m_prevError = 0;
     float m_cumError = 0; // (haha) error
 
-    float m_target = 0; // target value
+    float m_targetPoint = 0; // target value
     const Range<float> m_bounds;
 };
 
