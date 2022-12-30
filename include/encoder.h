@@ -21,8 +21,8 @@ private:
     T m_val; // value
     const T m_stepSize; // value to add per step
 
-    int m_aState = 0;
-    int m_aLastState;
+    uint8_t m_aState = 0;
+    uint8_t m_aLastState;
 };
 
 // Implementations for member functions
