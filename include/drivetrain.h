@@ -8,7 +8,7 @@
 //  Manages motors of the drivetrain.
 class ArcadeDriveTrain {
 public:
-    explicit ArcadeDriveTrain(Motor LMotor, Motor RMotor);
+    explicit ArcadeDriveTrain(Motor&& LMotor, Motor&& RMotor);
 
     void update(float millis); // Calls update function all motors. Should run every MOTOR_UPDATE_INTERVAL.
     void stop(); // sets all motors to 0

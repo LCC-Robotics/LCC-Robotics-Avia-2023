@@ -2,11 +2,11 @@
 
 #include "linearSlide.h"
 
-LinearSlide::LinearSlide(Motor motor, PID pid, const Range<float> bounds, float (*feedback)())
-    : m_motor { motor }
-    , m_pid { pid }
+LinearSlide::LinearSlide(Motor&& motor, PID&& pid, const utils::Range<float>& bounds, float (*feedback)())
+    : m_motor { utils::move(motor) }
+    , m_pid { utils::move(pid) }
     , m_feedback { feedback }
-    , m_bounds { bounds }
+    , m_bounds { utils::move(bounds) }
 {
 }
 

@@ -3,10 +3,21 @@
 
 #include <math.h>
 
+namespace utils {
+
 template <typename T>
 struct Range {
     T lower;
     T upper;
 };
+
+// simple implementation of std::move
+template <typename T>
+inline T&& move(T&& arg)
+{
+    return static_cast<T&&>(arg);
+}
+
+} // namespace utils
 
 #endif // LCC_ROBOTICS_22_23_INCLUDE_UTILS_H_

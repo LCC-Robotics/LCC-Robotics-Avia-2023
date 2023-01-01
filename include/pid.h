@@ -8,7 +8,7 @@
 // https://www.teachmemicro.com/arduino-pid-control-tutorial/
 class PID {
 public:
-    explicit PID(float kp, float ki, float kd, Range<float> bounds);
+    explicit PID(float kp, float ki, float kd, const utils::Range<float>& bounds);
 
     float calculate(float currPoint, float millis); // millis in millis
     inline float getTarget() const { return m_targetPoint; }
@@ -23,7 +23,7 @@ private:
     float m_cumError = 0; // (haha) error
 
     float m_targetPoint = 0; // target value
-    const Range<float> m_bounds;
+    const utils::Range<float> m_bounds;
 };
 
 #endif // LCC_ROBOTICS_22_23_INCLUDE_CORRECTION_H_

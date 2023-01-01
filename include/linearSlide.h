@@ -8,7 +8,7 @@
 
 class LinearSlide {
 public:
-    explicit LinearSlide(Motor motor, PID pid, Range<float> bounds, float (*feedback)());
+    explicit LinearSlide(Motor&& motor, PID&& pid, const utils::Range<float>& bounds, float (*feedback)());
 
     void update(float millis); // millis
     inline void move(int8_t v) { m_motor.set(v); } // motor value, call setManualMode before calling this function
@@ -24,7 +24,7 @@ private:
     bool m_manualMode = false; // manual mode =  joystick, auto mode = preset heights
 
     float (*m_feedback)(); // callback to get current position
-    const Range<float> m_bounds;
+    const utils::Range<float> m_bounds;
 };
 
 #endif // LCC_ROBOTICS_22_23_LINEARSLIDE_H
