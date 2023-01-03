@@ -15,32 +15,39 @@
 using namespace Crc;
 using utils::Range;
 
-// ================
-// CONSTANTS
-// ================
+// ====================
+// Controller Input
+// ====================
 
-#define FORWARD_CHANNEL ANALOG::JOYSTICK1_Y
-#define YAW_CHANNEL ANALOG::JOYSTICK1_X
+constexpr ANALOG FORWARD_CHANNEL = ANALOG::JOYSTICK1_Y;
+constexpr ANALOG YAW_CHANNEL = ANALOG::JOYSTICK1_X;
 
-#define LINEAR_SLIDE_MANUAL_CHANNEL ANALOG::JOYSTICK2_Y
-#define LINEAR_SLIDE_NEXT_BUTTON BUTTON::ARROW_UP
-#define LINEAR_SLIDE_PREV_BUTTON BUTTON::ARROW_DOWN
+constexpr ANALOG LINEAR_SLIDE_MANUAL_CHANNEL = ANALOG::JOYSTICK2_Y;
+constexpr BUTTON LINEAR_SLIDE_NEXT_BUTTON = BUTTON::ARROW_UP;
+constexpr BUTTON LINEAR_SLIDE_PREV_BUTTON = BUTTON::ARROW_DOWN;
 
-#define ENCODER_STEPS 30
+// ====================
+// Constants
+// ====================
 
-#define LINEAR_SLIDE_STAGES 3
-#define LINEAR_SLIDE_SPOOL_DIAMETER 20.0f // mm
-#define LINEAR_SLIDE_LEVELS 8
+constexpr int ENCODER_STEPS = 30;
 
+constexpr int LINEAR_SLIDE_STAGES = 3;
+constexpr int LINEAR_SLIDE_LEVELS = 8;
+constexpr float LINEAR_SLIDE_SPOOL_DIAMETER = 2.0; // cm
 constexpr float LINEAR_SLIDE_ENCODER_STEP_SIZE = LINEAR_SLIDE_SPOOL_DIAMETER * LINEAR_SLIDE_STAGES * PI / ENCODER_STEPS; // mm - distance travelled per step of rotary encoder
 
+constexpr etl::array<float, LINEAR_SLIDE_LEVELS> LINEAR_SLIDE_HEIGHTS { 0.0, 6.0, 17.0, 38.0, 66.0, 102.0, 146.0, 190.0 }; // cm
 constexpr Range<float> LINEAR_SLIDE_RANGE { 5.0, 200.0 };
-constexpr etl::array<float, LINEAR_SLIDE_LEVELS> LINEAR_SLIDE_HEIGHTS = { 0.0, 6.0, 17.0, 38.0, 66.0, 102.0, 146.0, 190.0 }; // cm
+
+// ====================
+// Controller Input
+// ====================
+
+RState remoteState; // custom remote state that uses the forbidden arts
 
 etl::debounce<> linearSlideNextButton;
 etl::debounce<> linearSlidePrevButton;
-
-RState remoteState; // custom remote state that uses the forbidden arts
 
 ArcadeDriveTrain driveTrain {
     Motor(CRC_PWM_5, false),
@@ -63,6 +70,8 @@ LinearSlide elevator {
 };
 
 int linearSlideLevel = 0;
+
+// ====================
 
 void setup()
 {

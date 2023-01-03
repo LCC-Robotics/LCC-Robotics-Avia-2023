@@ -5,9 +5,9 @@
 
 #include "utils.h"
 
-#define DEFAULT_SLEW_RATE 0.75
-
 using utils::Range;
+
+constexpr float DEFAULT_SLEW_RATE = 0.75;
 
 template <typename T = int8_t>
 constexpr Range<T> PWM_MOTOR_BOUNDS { -127, 127 };
