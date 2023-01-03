@@ -18,7 +18,10 @@ void Motor::update(unsigned int millis)
         return;
 
     if (m_command != m_output) {
-        m_output = (int8_t)limitSlew(m_flipped ? -m_command : m_command, m_output, (int)(m_slewRate * millis));
-        CrcLib::SetPwmOutput(m_pin, static_cast<char>(m_output));
+        m_output = limitSlew<>(
+            static_cast<int8_t>(m_flipped ? -m_command : m_command),
+            m_output,
+            static_cast<int8_t>(m_slewRate * millis));
+        CrcLib::SetPwmOutput(m_pin, m_output);
     }
 }

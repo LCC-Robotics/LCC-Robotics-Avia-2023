@@ -15,9 +15,10 @@ LinearSlide::LinearSlide(Motor&& motor, PID&& pid, const Range<float>& bounds, f
 
 void LinearSlide::update(unsigned int millis)
 {
-    if (!isManualMode())
-        m_motor.set((int8_t)m_pid.calculate((*m_feedback)(), millis));
-
+    if (!isManualMode()) {
+        auto command = m_pid.calculate((*m_feedback)(), millis);
+        m_motor.set(static_cast<int8_t>(command));
+    }
     m_motor.update(millis);
 }
 
