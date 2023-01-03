@@ -5,9 +5,9 @@
 
 #include "utils.h"
 
-#define DEFAULT_SLEW_RATE 0.75
-
 using utils::Range;
+
+constexpr float DEFAULT_SLEW_RATE = 0.75;
 
 template <typename T = int8_t>
 constexpr Range<T> PWM_MOTOR_BOUNDS { -127, 127 };
@@ -21,7 +21,7 @@ public:
     Motor(Motor&&) noexcept = default;
     Motor(const Motor&) = delete;
 
-    void update(float millis); // call per interval
+    void update(unsigned int millis); // call per interval
     inline void set(int8_t v) noexcept { m_command = v; } // set motor speed: -127 to 127
 
 private:
