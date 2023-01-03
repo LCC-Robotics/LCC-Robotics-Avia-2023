@@ -1,12 +1,11 @@
 #include <Arduino.h>
+#include <etl/utility.h>
 
 #include "drivetrain.h"
 
-using namespace utils;
-
 ArcadeDriveTrain::ArcadeDriveTrain(Motor&& LMotor, Motor&& RMotor)
-    : m_LMotor { ustd::move(LMotor) }
-    , m_RMotor { ustd::move(RMotor) }
+    : m_LMotor { etl::move(LMotor) }
+    , m_RMotor { etl::move(RMotor) }
 {
 }
 
