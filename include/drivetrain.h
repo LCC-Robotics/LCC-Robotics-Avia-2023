@@ -9,7 +9,7 @@
 class ArcadeDriveTrain {
 public:
     explicit ArcadeDriveTrain(Motor&& LMotor, Motor&& RMotor);
-    ArcadeDriveTrain(ArcadeDriveTrain&&) noexcept = default;
+    ArcadeDriveTrain(ArcadeDriveTrain&&) = default;
     ArcadeDriveTrain(const ArcadeDriveTrain&) = delete;
 
     void update(unsigned int millis); // Calls update function all motors. Should run every MOTOR_UPDATE_INTERVAL.
