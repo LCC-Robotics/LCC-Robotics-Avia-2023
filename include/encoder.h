@@ -12,8 +12,8 @@ template <typename T = int>
 class RotaryEncoder {
 public:
     explicit RotaryEncoder(uint8_t pinA, uint8_t pinB, T stepSize = 1, T initialValue = 0);
-    RotaryEncoder(RotaryEncoder<T>&&) noexcept = default;
-    RotaryEncoder(const RotaryEncoder<T>&) = delete;
+    RotaryEncoder<T>(RotaryEncoder<T>&&) noexcept = default;
+    RotaryEncoder<T>(const RotaryEncoder<T>&) = delete;
 
     void update(); // call every loop
     inline T getVal() const noexcept { return m_val; }

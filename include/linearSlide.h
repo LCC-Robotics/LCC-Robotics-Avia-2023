@@ -11,7 +11,7 @@ using utils::Range;
 class LinearSlide {
 public:
     explicit LinearSlide(Motor&& motor, PID&& pid, const Range<float>& bounds, float (*feedback)());
-    LinearSlide(LinearSlide&&) noexcept = default;
+    LinearSlide(LinearSlide&&) = default;
     LinearSlide(const LinearSlide&) = delete;
 
     void update(unsigned int millis); // millis

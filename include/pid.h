@@ -11,7 +11,7 @@ using utils::Range;
 class PID {
 public:
     explicit PID(float kp, float ki, float kd, const Range<float>& bounds);
-    PID(PID&&) noexcept = default;
+    PID(PID&&) = default;
     PID(const PID&) = delete;
 
     float calculate(float currPoint, float millis); // millis in millis
