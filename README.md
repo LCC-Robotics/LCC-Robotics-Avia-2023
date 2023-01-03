@@ -3,10 +3,13 @@
 This repo contains the code for LCC's robot for AVIA 2023, a robotics competition hosted
 by [CRC Robotics](https://robo-crc.ca/).
 
-The project is scaffolded using the `PlatformIO` framework with `megaatmega2560` as its target. We have decided to
-use `PlatformIO` because it allows for flexible and platform-agnostic projections with minimal configuration.
+The project is scaffolded using the PlatformIO framework, as it allows for flexible and platform-agnostic projections
+with minimal configuration.
 
-## Cloning the Repo 
+**Important Note**: This project will only work with the `Arduino Mega 2560` or equivalent boards that is compatible
+with the `megaatmega2560` target, due to the way the project is structured.
+
+## Cloning the Repo
 
 Make sure you have `git` installed on your machine. Then, clone this repository by command line:
 
@@ -16,31 +19,43 @@ git clone https://github.com/LCC-Robotics/LCC-Robotics-22-23.git
 
 ## Build and Upload
 
+The full list of build methods can be found in PlatformIO's [docs](https://docs.platformio.org/en/latest/).
+
 ### VSCode Extension
 
-Install the `PlatformIO` extension for [VSCode](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide). 
+Install the PlatformIO extension
+for [VSCode](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide).
 
-Then, in the `PlatformIO` extension menu, press `Build` to build the project, and then once it's built press `Upload` to upload the firmware to the board.
+Open the project in `VSCode`. Then, in the PlatformIO extension menu, press `Build` to build the project, or
+press `Upload` to build and upload the
+firmware to the board.
 
 ### PlatformIO Core (CLI)
 
-Install the `PlatformIO` [CLI tool](https://docs.platformio.org/en/stable/core/index.html).
+Install the PlatformIO [CLI tool](https://docs.platformio.org/en/stable/core/index.html).
 
-Then, run one of the following commands:
+`cd` into the project directory. Then, run one of the following commands:
 
 ```shell
-# build
+# build only (default=release)
 pio run
 
-# build and upload
+# build only (debug)
+pio run --environment debug
+
+# build and upload (default=release)
 pio run --target upload
+
+# build and upload (debug)
+pio run --environment debug --target upload
 ```
 
-## Notes
+## Compilation Database
 
-If you are using `clangd` or an IDE such as `CLion`, you will need to generate `compile_commands.json` in order to get code completion and error checking working.
+If you are using `clangd` or an IDE such as `CLion`, you will need to generate `compile_commands.json` in order to get
+code completion and error checking working.
 
-Generate `compile_commands.json` using the `PlatoformIO` CLI:
+Generate `compile_commands.json` using `PlatformIO CLI`:
 
 ```shell
 pio run --target compiledb
@@ -51,4 +66,3 @@ pio run --target compiledb
 [Kenneth Lew](https://github.com/lew1101)
 
 [Angela Wang](https://github.com/A-Blve)
-
