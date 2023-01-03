@@ -7,8 +7,10 @@
 
 #define DEFAULT_SLEW_RATE 0.75
 
+using utils::Range;
+
 template <typename T = int8_t>
-constexpr utils::Range<T> PWM_MOTOR_BOUNDS { -127, 127 };
+constexpr Range<T> PWM_MOTOR_BOUNDS { -127, 127 };
 
 // https://github.com/purduesigbots/libblrs/blob/master/libmtrmgr/src/mtrmgr.c
 // Used for PWM motors such as the ones used for the drivetrain and servos.
@@ -16,9 +18,11 @@ constexpr utils::Range<T> PWM_MOTOR_BOUNDS { -127, 127 };
 class Motor {
 public:
     explicit Motor(uint8_t pin, bool flipped = false, float slewRate = DEFAULT_SLEW_RATE);
+    Motor(Motor&&) noexcept = default;
+    Motor(const Motor&) = delete;
 
     void update(float millis); // call per interval
-    inline void set(int8_t v) { m_command = v; } // set motor speed: -127 to 127
+    inline void set(int8_t v) noexcept { m_command = v; } // set motor speed: -127 to 127
 
 private:
     uint8_t m_pin; // PWM pin

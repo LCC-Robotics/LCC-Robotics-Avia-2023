@@ -6,16 +6,20 @@
 #include "pid.h"
 #include "utils.h"
 
+using utils::Range;
+
 class LinearSlide {
 public:
-    explicit LinearSlide(Motor&& motor, PID&& pid, const utils::Range<float>& bounds, float (*feedback)());
+    explicit LinearSlide(Motor&& motor, PID&& pid, const Range<float>& bounds, float (*feedback)());
+    LinearSlide(LinearSlide&&) noexcept = default;
+    LinearSlide(const LinearSlide&) = delete;
 
     void update(float millis); // millis
     inline void move(int8_t v) { m_motor.set(v); } // motor value, call setManualMode before calling this function
     bool setManualMode(); // must be called before setting height or moving
     bool setAutoMode(); // if not in mode, return true
-    inline bool isManualMode() const { return m_manualMode; }
-    inline float getHeight() const { return m_pid.getTarget(); }
+    inline bool isManualMode() const noexcept { return m_manualMode; }
+    inline float getHeight() const noexcept { return m_pid.getTarget(); }
     inline void setHeight(float v) { m_pid.setTarget(constrain(v, m_bounds.lower, m_bounds.upper)); } // height as float, call setAutoMode before calling this function
 
 private:
@@ -24,7 +28,7 @@ private:
     bool m_manualMode = false; // manual mode =  joystick, auto mode = preset heights
 
     float (*m_feedback)(); // callback to get current position
-    const utils::Range<float> m_bounds;
+    const Range<float> m_bounds;
 };
 
 #endif // LCC_ROBOTICS_22_23_LINEARSLIDE_H

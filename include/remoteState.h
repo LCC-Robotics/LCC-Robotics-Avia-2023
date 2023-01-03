@@ -3,18 +3,16 @@
 
 #include <CrcLib.h>
 
+using CrcUtility::ANALOG;
+using CrcUtility::BUTTON;
+
 class RState { // dumb name to avoid confusion with CrcUtility::RemoteState
-    using BUTTON = CrcUtility::BUTTON;
-    using ANALOG = CrcUtility::ANALOG;
-
 public:
-    RState() = default;
-
     static RState Next(); // get next remote state
-    static RState Convert(CrcUtility::RemoteState crcRemoteState);
+    static RState Convert(CrcUtility::RemoteState crcRemoteState) noexcept;
 
-    int8_t operator[](ANALOG channel) const;
-    bool operator[](BUTTON button) const;
+    int8_t operator[](ANALOG channel) const noexcept;
+    bool operator[](BUTTON button) const noexcept;
 
 private:
     int8_t joystick1X = 0;

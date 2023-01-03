@@ -8,6 +8,8 @@
 class Debounce {
 public:
     explicit Debounce(bool initialState = false, unsigned int debounceInterval = DEBOUNCE_INTERVAL);
+    Debounce(Debounce&&) noexcept = default;
+    Debounce(const Debounce&) = delete;
 
     void addSample(bool newState, unsigned int millis); // ms
     inline void setInterval(unsigned int debounceInterval) { m_debounceInterval = debounceInterval; }

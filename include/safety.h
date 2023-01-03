@@ -5,14 +5,16 @@
 
 #include "utils.h"
 
-template <typename T = int8_t>
-constexpr utils::Range<T> PWM_LIMIT_POSITIVE { 0, 127 };
+using utils::Range;
 
 template <typename T = int8_t>
-constexpr utils::Range<T> PWM_LIMIT_NEGATIVE { -127, 0 };
+constexpr Range<T> PWM_LIMIT_POSITIVE { 0, 127 };
+
+template <typename T = int8_t>
+constexpr Range<T> PWM_LIMIT_NEGATIVE { -127, 0 };
 
 // Simple function which prevents robot from committing self die by clamping the raws between lower and upper when limit switch is activated
-inline int safety(bool activated, int raw, const utils::Range<int>& range)
+inline int safety(bool activated, int raw, const Range<int>& range)
 {
     if (!activated)
         return raw;
