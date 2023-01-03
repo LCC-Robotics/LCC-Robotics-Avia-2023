@@ -1,10 +1,12 @@
 #include "pid.h"
 
-PID::PID(const float kp, const float ki, const float kd, const Range<float> bounds)
+using namespace utils;
+
+PID::PID(const float kp, const float ki, const float kd, const Range<float>& bounds)
     : m_kp { kp }
     , m_ki { ki }
     , m_kd { kd }
-    , m_bounds { bounds }
+    , m_bounds { ustd::move(bounds) }
 {
 }
 

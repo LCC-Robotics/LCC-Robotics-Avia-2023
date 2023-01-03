@@ -5,14 +5,18 @@
 
 #include "utils.h"
 
+using utils::Range;
+
 // https://www.teachmemicro.com/arduino-pid-control-tutorial/
 class PID {
 public:
-    explicit PID(float kp, float ki, float kd, Range<float> bounds);
+    explicit PID(float kp, float ki, float kd, const Range<float>& bounds);
+    PID(PID&&) noexcept = default;
+    PID(const PID&) = delete;
 
     float calculate(float currPoint, float millis); // millis in millis
-    inline float getTarget() const { return m_targetPoint; }
-    inline void setTarget(float v) { m_targetPoint = v; }
+    inline float getTarget() const noexcept { return m_targetPoint; }
+    inline void setTarget(float v) noexcept { m_targetPoint = v; }
 
 private:
     const float m_kp; // proportional constant

@@ -2,9 +2,11 @@
 
 #include "drivetrain.h"
 
-ArcadeDriveTrain::ArcadeDriveTrain(Motor LMotor, Motor RMotor)
-    : m_LMotor { LMotor }
-    , m_RMotor { RMotor }
+using namespace utils;
+
+ArcadeDriveTrain::ArcadeDriveTrain(Motor&& LMotor, Motor&& RMotor)
+    : m_LMotor { ustd::move(LMotor) }
+    , m_RMotor { ustd::move(RMotor) }
 {
 }
 

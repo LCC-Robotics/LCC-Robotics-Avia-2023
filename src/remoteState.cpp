@@ -4,7 +4,12 @@
 
 using namespace Crc;
 
-RState RState::Convert(CrcUtility::RemoteState crcRemoteState)
+RState RState::Next()
+{
+    return Convert(CrcLib::RemoteState());
+}
+
+RState RState::Convert(CrcUtility::RemoteState crcRemoteState) noexcept
 {
     crcRemoteState.joystick1X -= 128;
     crcRemoteState.joystick1Y -= 128;
@@ -15,12 +20,7 @@ RState RState::Convert(CrcUtility::RemoteState crcRemoteState)
     return *reinterpret_cast<RState*>(&crcRemoteState); // forbidden c++ dark magic
 }
 
-RState RState::Next()
-{
-    return RState::Convert(CrcLib::RemoteState());
-}
-
-int8_t RState::operator[](ANALOG channel) const
+int8_t RState::operator[](ANALOG channel) const noexcept
 {
     switch (channel) {
     case ANALOG::JOYSTICK1_X: return joystick1X;
@@ -34,7 +34,7 @@ int8_t RState::operator[](ANALOG channel) const
     }
 }
 
-bool RState::operator[](BUTTON button) const
+bool RState::operator[](BUTTON button) const noexcept
 {
     switch (button) {
     case BUTTON::ARROW_RIGHT: return arrowRight;

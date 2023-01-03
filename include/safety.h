@@ -5,6 +5,8 @@
 
 #include "utils.h"
 
+using utils::Range;
+
 template <typename T = int8_t>
 constexpr Range<T> PWM_LIMIT_POSITIVE { 0, 127 };
 
