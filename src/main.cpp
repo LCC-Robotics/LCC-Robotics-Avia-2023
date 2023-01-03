@@ -27,7 +27,7 @@ constexpr BUTTON LINEAR_SLIDE_NEXT_BUTTON = BUTTON::ARROW_UP;
 constexpr BUTTON LINEAR_SLIDE_PREV_BUTTON = BUTTON::ARROW_DOWN;
 
 // ====================
-// Constants
+// Pins
 // ====================
 
 constexpr uint8_t LEFT_MOTOR_PIN = CRC_PWM_5;
@@ -36,6 +36,10 @@ constexpr uint8_t ELEVATOR_MOTOR_PIN = CRC_PWM_7;
 
 constexpr uint8_t ELEVATOR_ENCODER_PIN_A = CRC_DIG_2;
 constexpr uint8_t ELEVATOR_ENCODER_PIN_B = CRC_DIG_3;
+
+// ====================
+// Constants
+// ====================
 
 constexpr int ENCODER_STEPS = 30;
 
