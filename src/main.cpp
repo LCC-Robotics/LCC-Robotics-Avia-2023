@@ -1,8 +1,9 @@
 #include <Arduino.h>
-
 #include <CrcLib.h> // https://robocrc.atlassian.net/wiki/spaces/AR/pages/403767325/CrcLib+Functions+-+An+overview
 
-#include "debounce.h"
+#include <etl/array.h>
+#include <etl/debounce.h>
+
 #include "drivetrain.h"
 #include "encoder.h"
 #include "linearSlide.h"
@@ -12,6 +13,7 @@
 #include "utils.h"
 
 using namespace Crc;
+using utils::Range;
 
 // ================
 // CONSTANTS
@@ -30,16 +32,15 @@ using namespace Crc;
 #define LINEAR_SLIDE_SPOOL_DIAMETER 20.0f // mm
 #define LINEAR_SLIDE_LEVELS 8
 
-constexpr utils::Range<float> LINEAR_SLIDE_RANGE { 50.0, 2000.0 };
 constexpr float LINEAR_SLIDE_ENCODER_STEP_SIZE = LINEAR_SLIDE_SPOOL_DIAMETER * LINEAR_SLIDE_STAGES * PI / ENCODER_STEPS; // mm - distance travelled per step of rotary encoder
-const float LINEAR_SLIDE_HEIGHTS[8] = { 0.0, 60.0, 170.0, 380.0, 660.0, 1020.0, 1460.0, 1900.0 }; // mm
 
-// ===============
+constexpr Range<float> LINEAR_SLIDE_RANGE { 5.0, 200.0 };
+constexpr etl::array<float, LINEAR_SLIDE_LEVELS> LINEAR_SLIDE_HEIGHTS = { 0.0, 6.0, 17.0, 38.0, 66.0, 102.0, 146.0, 190.0 }; // cm
+
+etl::debounce<> linearSlideNextButton;
+etl::debounce<> linearSlidePrevButton;
 
 RState remoteState; // custom remote state that uses the forbidden arts
-
-Debounce linearSlideNextButton;
-Debounce linearSlidePrevButton;
 
 ArcadeDriveTrain driveTrain {
     Motor(CRC_PWM_5, false),
@@ -84,6 +85,12 @@ void loop()
 {
     CrcLib::Update();
 
+    const unsigned int dt = CrcLib::GetDeltaTimeMillis();
+
+    driveTrain.update(dt);
+    elevator.update(dt);
+    elevatorEncoder.update();
+
     // Check if commands are valid
     if (!CrcLib::IsCommValid()) // controller not connected, don't run loop
     {
@@ -91,16 +98,11 @@ void loop()
         return;
     }
 
-    const unsigned int dt = CrcLib::GetDeltaTimeMillis();
-
     // Update remote state`
     remoteState = RState::Next();
 
-    driveTrain.update(dt);
-    elevator.update(dt);
-    linearSlideNextButton.addSample(remoteState[LINEAR_SLIDE_NEXT_BUTTON], dt);
-    linearSlidePrevButton.addSample(remoteState[LINEAR_SLIDE_PREV_BUTTON], dt);
-    elevatorEncoder.update();
+    linearSlideNextButton.add(remoteState[LINEAR_SLIDE_NEXT_BUTTON]);
+    linearSlidePrevButton.add(remoteState[LINEAR_SLIDE_PREV_BUTTON]);
 
     // move robot
     driveTrain.move(remoteState[FORWARD_CHANNEL], remoteState[YAW_CHANNEL]);
@@ -112,7 +114,7 @@ void loop()
         }
         elevator.move(remoteState[LINEAR_SLIDE_MANUAL_CHANNEL]);
 
-    } else if (linearSlideNextButton.fell()) {
+    } else if (linearSlideNextButton.has_changed() && !linearSlideNextButton.is_set()) {
         if (elevator.setAutoMode()) {
             const float currHeight = elevator.getHeight();
 
@@ -125,7 +127,7 @@ void loop()
         }
         elevator.setHeight(LINEAR_SLIDE_HEIGHTS[linearSlideLevel]);
 
-    } else if (linearSlidePrevButton.fell()) {
+    } else if (linearSlidePrevButton.has_changed() && !linearSlidePrevButton.is_set()) {
         if (elevator.setAutoMode()) {
             const float currHeight = elevator.getHeight();
 

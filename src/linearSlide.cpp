@@ -1,14 +1,15 @@
 #include <Arduino.h>
+#include <etl/utility.h>
 
 #include "linearSlide.h"
 
 using namespace utils;
 
 LinearSlide::LinearSlide(Motor&& motor, PID&& pid, const Range<float>& bounds, float (*feedback)())
-    : m_motor { ustd::move(motor) }
-    , m_pid { ustd::move(pid) }
+    : m_motor { etl::move(motor) }
+    , m_pid { etl::move(pid) }
     , m_feedback { feedback }
-    , m_bounds { ustd::move(bounds) }
+    , m_bounds { etl::move(bounds) }
 {
 }
 
