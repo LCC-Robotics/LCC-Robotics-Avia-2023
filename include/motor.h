@@ -21,7 +21,7 @@ public:
     Motor(Motor&&) noexcept = default;
     Motor(const Motor&) = delete;
 
-    void update(float millis); // call per interval
+    void update(unsigned int millis); // call per interval
     inline void set(int8_t v) noexcept { m_command = v; } // set motor speed: -127 to 127
 
 private:

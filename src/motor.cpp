@@ -12,7 +12,7 @@ Motor::Motor(uint8_t pin, bool flipped, float slewRate)
 {
 }
 
-void Motor::update(float millis)
+void Motor::update(unsigned int millis)
 {
     if (m_slewRate == 0.0)
         return;

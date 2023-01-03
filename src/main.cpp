@@ -1,7 +1,6 @@
 #include <Arduino.h>
 
 #include <CrcLib.h> // https://robocrc.atlassian.net/wiki/spaces/AR/pages/403767325/CrcLib+Functions+-+An+overview
-#include <arduino-timer.h> // https://github.com/contrem/arduino-timer
 
 #include "debounce.h"
 #include "drivetrain.h"
@@ -25,7 +24,6 @@ using namespace Crc;
 #define LINEAR_SLIDE_NEXT_BUTTON BUTTON::ARROW_UP
 #define LINEAR_SLIDE_PREV_BUTTON BUTTON::ARROW_DOWN
 
-#define MOTOR_UPDATE_INTERVAL 20 // ms
 #define ENCODER_STEPS 30
 
 #define LINEAR_SLIDE_STAGES 3
@@ -42,8 +40,6 @@ RState remoteState; // custom remote state that uses the forbidden arts
 
 Debounce linearSlideNextButton;
 Debounce linearSlidePrevButton;
-
-Timer<5> timer; // allows us to
 
 ArcadeDriveTrain driveTrain {
     Motor(CRC_PWM_5, false),
@@ -79,15 +75,6 @@ void setup()
     CrcLib::InitializePwmOutput(CRC_PWM_6);
     CrcLib::InitializePwmOutput(CRC_PWM_7);
 
-    // recalculate m_motor output every MOTOR_UPDATE_INTERVAL
-    // still stupid proof
-    timer.every(MOTOR_UPDATE_INTERVAL,
-        [](void*) -> bool {
-            driveTrain.update(MOTOR_UPDATE_INTERVAL);
-            elevator.update(MOTOR_UPDATE_INTERVAL);
-            return true;
-        });
-
 #ifdef DEBUG // only start serial if in debug mode (serial can affect performance)
     Serial.begin(BAUD); // macro defined in platformio.ini
 #endif
@@ -97,9 +84,6 @@ void loop()
 {
     CrcLib::Update();
 
-    timer.tick<void>();
-    elevatorEncoder.update();
-
     // Check if commands are valid
     if (!CrcLib::IsCommValid()) // controller not connected, don't run loop
     {
@@ -107,13 +91,16 @@ void loop()
         return;
     }
 
-    const auto dt = CrcLib::GetDeltaTimeMillis();
+    const unsigned int dt = CrcLib::GetDeltaTimeMillis();
 
     // Update remote state`
     remoteState = RState::Next();
 
+    driveTrain.update(dt);
+    elevator.update(dt);
     linearSlideNextButton.addSample(remoteState[LINEAR_SLIDE_NEXT_BUTTON], dt);
     linearSlidePrevButton.addSample(remoteState[LINEAR_SLIDE_PREV_BUTTON], dt);
+    elevatorEncoder.update();
 
     // move robot
     driveTrain.move(remoteState[FORWARD_CHANNEL], remoteState[YAW_CHANNEL]);

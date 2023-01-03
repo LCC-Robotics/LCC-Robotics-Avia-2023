@@ -12,7 +12,7 @@ public:
     ArcadeDriveTrain(ArcadeDriveTrain&&) noexcept = default;
     ArcadeDriveTrain(const ArcadeDriveTrain&) = delete;
 
-    void update(float millis); // Calls update function all motors. Should run every MOTOR_UPDATE_INTERVAL.
+    void update(unsigned int millis); // Calls update function all motors. Should run every MOTOR_UPDATE_INTERVAL.
     void stop(); // sets all motors to 0
     void move(uint8_t forwardChannel, uint8_t yawChannel);
 

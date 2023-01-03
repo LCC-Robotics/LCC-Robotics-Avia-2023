@@ -14,7 +14,7 @@ public:
     LinearSlide(LinearSlide&&) noexcept = default;
     LinearSlide(const LinearSlide&) = delete;
 
-    void update(float millis); // millis
+    void update(unsigned int millis); // millis
     inline void move(int8_t v) { m_motor.set(v); } // motor value, call setManualMode before calling this function
     bool setManualMode(); // must be called before setting height or moving
     bool setAutoMode(); // if not in mode, return true

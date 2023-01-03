@@ -10,7 +10,7 @@ ArcadeDriveTrain::ArcadeDriveTrain(Motor&& LMotor, Motor&& RMotor)
 {
 }
 
-void ArcadeDriveTrain::update(float millis) // Calls update function all motors. Should be ran every MOTOR_UPDATE_INTERVAL.
+void ArcadeDriveTrain::update(unsigned int millis) // Calls update function all motors. Should be ran every MOTOR_UPDATE_INTERVAL.
 {
     m_LMotor.update(millis);
     m_RMotor.update(millis);
