@@ -30,38 +30,40 @@ constexpr BUTTON LINEAR_SLIDE_PREV_BUTTON = BUTTON::ARROW_DOWN;
 // Constants
 // ====================
 
+constexpr uint8_t LEFT_MOTOR_PIN = CRC_PWM_5;
+constexpr uint8_t RIGHT_MOTOR_PIN = CRC_PWM_6;
+constexpr uint8_t ELEVATOR_MOTOR_PIN = CRC_PWM_7;
+
+constexpr uint8_t ELEVATOR_ENCODER_PIN_A = CRC_DIG_2;
+constexpr uint8_t ELEVATOR_ENCODER_PIN_B = CRC_DIG_3;
+
 constexpr int ENCODER_STEPS = 30;
 
 constexpr int LINEAR_SLIDE_STAGES = 3;
 constexpr int LINEAR_SLIDE_LEVELS = 8;
 constexpr float LINEAR_SLIDE_SPOOL_DIAMETER = 2.0; // cm
-constexpr float LINEAR_SLIDE_ENCODER_STEP_SIZE = LINEAR_SLIDE_SPOOL_DIAMETER * LINEAR_SLIDE_STAGES * PI / ENCODER_STEPS; // mm - distance travelled per step of rotary encoder
+constexpr float LINEAR_SLIDE_ENCODER_STEP_SIZE = LINEAR_SLIDE_SPOOL_DIAMETER * LINEAR_SLIDE_STAGES * PI / ENCODER_STEPS; // cm - distance travelled per step of rotary encoder
 
 constexpr etl::array<float, LINEAR_SLIDE_LEVELS> LINEAR_SLIDE_HEIGHTS { 0.0, 6.0, 17.0, 38.0, 66.0, 102.0, 146.0, 190.0 }; // cm
 constexpr Range<float> LINEAR_SLIDE_RANGE { 5.0, 200.0 };
 
 // ====================
-// Controller Input
+// Objects
 // ====================
 
-RState remoteState; // custom remote state that uses the forbidden arts
-
-etl::debounce<> linearSlideNextButton;
-etl::debounce<> linearSlidePrevButton;
-
 ArcadeDriveTrain driveTrain {
-    Motor(CRC_PWM_5, false),
-    Motor(CRC_PWM_6, true)
+    Motor(LEFT_MOTOR_PIN, false),
+    Motor(RIGHT_MOTOR_PIN, true)
 };
 
 RotaryEncoder<float> elevatorEncoder {
-    CRC_DIG_2,
-    CRC_DIG_3,
+    ELEVATOR_ENCODER_PIN_A,
+    ELEVATOR_ENCODER_PIN_B,
     LINEAR_SLIDE_ENCODER_STEP_SIZE
 };
 
 LinearSlide elevator {
-    Motor(CRC_PWM_7),
+    Motor(ELEVATOR_MOTOR_PIN),
     PID(1.0, 1.0, 1.0, PWM_MOTOR_BOUNDS<float>),
     LINEAR_SLIDE_RANGE,
     []() -> float {
@@ -69,21 +71,26 @@ LinearSlide elevator {
     }
 };
 
-int linearSlideLevel = 0;
-
 // ====================
+
+RState remoteState; // custom remote state that uses the forbidden arts
+
+etl::debounce<> linearSlideNextButton;
+etl::debounce<> linearSlidePrevButton;
+
+volatile int linearSlideLevel = 0;
 
 void setup()
 {
     CrcLib::Initialize();
 
     // Initialize pins
-    CrcLib::SetDigitalPinMode(CRC_DIG_2, INPUT);
-    CrcLib::SetDigitalPinMode(CRC_DIG_3, INPUT);
+    CrcLib::SetDigitalPinMode(ELEVATOR_ENCODER_PIN_A, INPUT);
+    CrcLib::SetDigitalPinMode(ELEVATOR_ENCODER_PIN_B, INPUT);
 
-    CrcLib::InitializePwmOutput(CRC_PWM_5);
-    CrcLib::InitializePwmOutput(CRC_PWM_6);
-    CrcLib::InitializePwmOutput(CRC_PWM_7);
+    CrcLib::InitializePwmOutput(LEFT_MOTOR_PIN);
+    CrcLib::InitializePwmOutput(RIGHT_MOTOR_PIN);
+    CrcLib::InitializePwmOutput(ELEVATOR_MOTOR_PIN);
 
 #ifdef DEBUG // only start serial if in debug mode (serial can affect performance)
     Serial.begin(BAUD); // macro defined in platformio.ini
