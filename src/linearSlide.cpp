@@ -3,7 +3,7 @@
 
 #include "linearSlide.h"
 
-using namespace utils;
+using utils::Range;
 
 LinearSlide::LinearSlide(Motor&& motor, PID&& pid, const Range<float>& bounds, float (*feedback)())
     : m_motor { etl::move(motor) }
