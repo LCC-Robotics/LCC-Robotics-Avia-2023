@@ -18,8 +18,6 @@ constexpr Range<T> PWM_MOTOR_BOUNDS { -127, 127 };
 class Motor {
 public:
     explicit Motor(uint8_t pin, bool flipped = false, float slewRate = DEFAULT_SLEW_RATE);
-    Motor(Motor&&) = default;
-    Motor(const Motor&) = delete;
 
     void update(unsigned int millis); // call per interval
     inline void set(int8_t v) noexcept { m_command = v; } // set motor speed: -127 to 127

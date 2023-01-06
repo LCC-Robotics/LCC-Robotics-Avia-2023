@@ -10,9 +10,7 @@ using utils::Range;
 
 class LinearSlide {
 public:
-    explicit LinearSlide(Motor&& motor, PID&& pid, const Range<float>& bounds, float (*feedback)());
-    LinearSlide(LinearSlide&&) = default;
-    LinearSlide(const LinearSlide&) = delete;
+    explicit LinearSlide(Motor motor, PID pid, const Range<float>& bounds, float (*feedback)());
 
     void update(unsigned int millis); // millis
     inline void move(int8_t v) { m_motor.set(v); } // motor value, call setManualMode before calling this function

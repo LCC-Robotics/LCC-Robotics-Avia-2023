@@ -8,9 +8,7 @@
 //  Manages motors of the drivetrain.
 class ArcadeDriveTrain {
 public:
-    explicit ArcadeDriveTrain(Motor&& LMotor, Motor&& RMotor);
-    ArcadeDriveTrain(ArcadeDriveTrain&&) = default;
-    ArcadeDriveTrain(const ArcadeDriveTrain&) = delete;
+    explicit ArcadeDriveTrain(Motor LMotor, Motor RMotor);
 
     void update(unsigned int millis); // Calls update function all motors. Should run every MOTOR_UPDATE_INTERVAL.
     void stop(); // sets all motors to 0

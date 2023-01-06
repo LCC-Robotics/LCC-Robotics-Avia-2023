@@ -1,11 +1,11 @@
 #include <Arduino.h>
-#include <etl/utility.h>
+
 
 #include "drivetrain.h"
 
-ArcadeDriveTrain::ArcadeDriveTrain(Motor&& LMotor, Motor&& RMotor)
-    : m_LMotor { etl::move(LMotor) }
-    , m_RMotor { etl::move(RMotor) }
+ArcadeDriveTrain::ArcadeDriveTrain(Motor LMotor, Motor RMotor)
+    : m_LMotor { LMotor }
+    , m_RMotor { RMotor }
 {
 }
 
