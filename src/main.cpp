@@ -4,16 +4,13 @@
 #include <etl/array.h>
 #include <etl/debounce.h>
 
-#include "drivetrain.h"
 #include "encoder.h"
 #include "linearSlide.h"
-#include "motor.h"
 #include "pid.h"
 #include "remoteState.h"
 #include "utils.h"
 
 using namespace Crc;
-using utils::Range;
 
 // ====================
 // Controller Input
@@ -41,6 +38,7 @@ constexpr uint8_t ELEVATOR_ENCODER_PIN_B = CRC_DIG_3;
 // Constants
 // ====================
 
+constexpr float DEFAULT_SLEW_RATE = 0.75;
 constexpr int ENCODER_STEPS = 30;
 
 constexpr int LINEAR_SLIDE_STAGES = 3;
@@ -55,11 +53,6 @@ constexpr Range<float> LINEAR_SLIDE_RANGE { 5.0, 200.0 };
 // Objects
 // ====================
 
-ArcadeDriveTrain driveTrain {
-    Motor(LEFT_MOTOR_PIN, false),
-    Motor(RIGHT_MOTOR_PIN, true)
-};
-
 RotaryEncoder<float> elevatorEncoder {
     ELEVATOR_ENCODER_PIN_A,
     ELEVATOR_ENCODER_PIN_B,
@@ -67,7 +60,7 @@ RotaryEncoder<float> elevatorEncoder {
 };
 
 LinearSlide elevator {
-    Motor(ELEVATOR_MOTOR_PIN),
+    ELEVATOR_MOTOR_PIN,
     PID(1.0, 1.0, 1.0, PWM_MOTOR_BOUNDS<float>),
     LINEAR_SLIDE_RANGE,
     []() -> float {
@@ -77,6 +70,7 @@ LinearSlide elevator {
 
 // ====================
 
+RState lastRemoteState;
 RState remoteState; // custom remote state that uses the forbidden arts
 
 etl::debounce<> linearSlideNextButton;
@@ -92,9 +86,9 @@ void setup()
     CrcLib::SetDigitalPinMode(ELEVATOR_ENCODER_PIN_A, INPUT);
     CrcLib::SetDigitalPinMode(ELEVATOR_ENCODER_PIN_B, INPUT);
 
-    CrcLib::InitializePwmOutput(LEFT_MOTOR_PIN);
-    CrcLib::InitializePwmOutput(RIGHT_MOTOR_PIN);
-    CrcLib::InitializePwmOutput(ELEVATOR_MOTOR_PIN);
+    CrcLib::InitializePwmOutput(LEFT_MOTOR_PIN, false);
+    CrcLib::InitializePwmOutput(RIGHT_MOTOR_PIN, false);
+    CrcLib::InitializePwmOutput(ELEVATOR_MOTOR_PIN, false);
 
 #ifdef DEBUG // only start serial if in debug mode (serial can affect performance)
     Serial.begin(BAUD); // macro defined in platformio.ini
@@ -107,32 +101,41 @@ void loop()
 
     const unsigned int dt = CrcLib::GetDeltaTimeMillis();
 
-    driveTrain.update(dt);
     elevator.update(dt);
     elevatorEncoder.update();
 
     // Check if commands are valid
     if (!CrcLib::IsCommValid()) // controller not connected, don't run loop
     {
-        driveTrain.stop(); // should fix jerking problem from last year?
+        CrcLib::MoveArcade(0, 0, LEFT_MOTOR_PIN, RIGHT_MOTOR_PIN); // should fix jerking problem from last year?
         return;
     }
 
-    // Update remote state`
+    // Update remote state
+    lastRemoteState = remoteState;
     remoteState = RState::Next();
 
     linearSlideNextButton.add(remoteState[LINEAR_SLIDE_NEXT_BUTTON]);
     linearSlidePrevButton.add(remoteState[LINEAR_SLIDE_PREV_BUTTON]);
 
+    // max amount that input can deviate by
+    const auto maxSlew = static_cast<int8_t>(DEFAULT_SLEW_RATE * dt);
+
     // move robot
-    driveTrain.move(remoteState[FORWARD_CHANNEL], remoteState[YAW_CHANNEL]);
+    CrcLib::MoveArcade(
+        limitSlew<int8_t>(remoteState[FORWARD_CHANNEL], lastRemoteState[FORWARD_CHANNEL], maxSlew),
+        limitSlew<int8_t>(remoteState[YAW_CHANNEL], lastRemoteState[YAW_CHANNEL], maxSlew),
+        LEFT_MOTOR_PIN,
+        RIGHT_MOTOR_PIN);
 
     // Linear slide
     if (remoteState[LINEAR_SLIDE_MANUAL_CHANNEL]) {
         if (elevator.setManualMode()) {
             linearSlideLevel = -1;
         }
-        elevator.move(remoteState[LINEAR_SLIDE_MANUAL_CHANNEL]);
+
+        elevator.set(
+            limitSlew<int8_t>(remoteState[LINEAR_SLIDE_MANUAL_CHANNEL], lastRemoteState[LINEAR_SLIDE_MANUAL_CHANNEL], maxSlew));
 
     } else if (linearSlideNextButton.has_changed() && !linearSlideNextButton.is_set()) {
         if (elevator.setAutoMode()) {
