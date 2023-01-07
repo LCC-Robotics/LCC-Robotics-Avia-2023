@@ -1,6 +1,5 @@
 #include <Arduino.h>
 
-
 #include "drivetrain.h"
 
 ArcadeDriveTrain::ArcadeDriveTrain(Motor LMotor, Motor RMotor)
@@ -23,6 +22,6 @@ void ArcadeDriveTrain::stop() // sets all motors to 0
 
 void ArcadeDriveTrain::move(uint8_t forwardChannel, uint8_t yawChannel)
 {
-    m_LMotor.set(constrain(forwardChannel - yawChannel, -127, 127)); // Determines the power of the left wheels
-    m_RMotor.set(constrain(forwardChannel + yawChannel, -127, 127)); // Determines the power of the right wheels
+    m_LMotor.set(constrain(forwardChannel - yawChannel, -128, 127)); // Determines the power of the left wheels
+    m_RMotor.set(constrain(forwardChannel + yawChannel, -128, 127)); // Determines the power of the right wheels
 }
