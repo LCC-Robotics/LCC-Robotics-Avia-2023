@@ -5,8 +5,6 @@
 
 #include "utils.h"
 
-using utils::Range;
-
 // https://www.teachmemicro.com/arduino-pid-control-tutorial/
 class PID {
 public:
