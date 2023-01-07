@@ -7,7 +7,7 @@
 #include "pid.h"
 #include "utils.h"
 
-using namespace Crc;
+using Crc::CrcLib;
 
 class LinearSlide {
 public:

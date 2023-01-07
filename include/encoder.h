@@ -6,7 +6,7 @@
 
 #include "utils.h"
 
-using namespace Crc;
+using Crc::CrcLib;
 
 template <typename T = int>
 class RotaryEncoder {

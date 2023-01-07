@@ -2,7 +2,7 @@
 
 #include "remoteState.h"
 
-using namespace Crc;
+using Crc::CrcLib;
 
 RState RState::Next()
 {
