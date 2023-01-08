@@ -2,13 +2,6 @@
 
 #include "remoteState.h"
 
-using Crc::CrcLib;
-
-RState RState::Next()
-{
-    return Convert(CrcLib::RemoteState());
-}
-
 RState RState::Convert(CrcUtility::RemoteState crcRemoteState) noexcept
 {
     crcRemoteState.joystick1X -= 128;

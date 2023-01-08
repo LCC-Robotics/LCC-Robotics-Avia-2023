@@ -3,6 +3,8 @@
 
 #include <CrcLib.h>
 
+using Crc::CrcLib;
+
 using CrcUtility::ANALOG;
 using CrcUtility::BUTTON;
 
@@ -10,7 +12,7 @@ class RState { // dumb name to avoid confusion with CrcUtility::RemoteState
 public:
     RState() = default;
 
-    static RState Next(); // get next remote state
+    static inline RState Next() { return Convert(CrcLib::RemoteState()); }; // get next remote state
     static RState Convert(CrcUtility::RemoteState crcRemoteState) noexcept;
 
     int8_t operator[](ANALOG channel) const noexcept;
