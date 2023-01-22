@@ -2,7 +2,8 @@
 
 #include "pid.h"
 
-PID::PID(const float kp, const float ki, const float kd, const Range<float>& bounds)
+template <typename T>
+PID<T>::PID(const float kp, const float ki, const float kd, const Range<T>& bounds)
     : m_kp { kp }
     , m_ki { ki }
     , m_kd { kd }
@@ -10,14 +11,15 @@ PID::PID(const float kp, const float ki, const float kd, const Range<float>& bou
 {
 }
 
-float PID::calculate(float currPoint, float millis)
+template <typename T>
+T PID<T>::calculate(float currPoint, float millis)
 {
     float error = m_targetPoint - currPoint;
 
     float integral = m_cumError + error * millis;
     float derivative = (error - m_prevError) / millis;
 
-    float output = m_kp * error + m_ki * m_cumError + m_kd * derivative;
+    T output = m_kp * error + m_ki * m_cumError + m_kd * derivative;
 
     if (output < m_bounds.lower)
         output = m_bounds.lower;

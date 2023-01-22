@@ -6,13 +6,14 @@
 #include "utils.h"
 
 // https://www.teachmemicro.com/arduino-pid-control-tutorial/
+template <typename T>
 class PID {
 public:
-    explicit PID(float kp, float ki, float kd, const Range<float>& bounds);
+    explicit PID(float kp, float ki, float kd, const Range<T>& bounds);
 
-    float calculate(float currPoint, float millis); // millis in millis
-    inline float getTarget() const noexcept { return m_targetPoint; }
-    inline void setTarget(float v) noexcept { m_targetPoint = v; }
+    T calculate(float currPoint, float millis); // millis in millis
+    inline T getTarget() const noexcept { return m_targetPoint; }
+    inline void setTarget(T v) noexcept { m_targetPoint = v; }
 
 private:
     const float m_kp; // proportional constant
@@ -23,7 +24,7 @@ private:
     float m_cumError = 0; // (haha) error
 
     float m_targetPoint = 0; // target value
-    const Range<float> m_bounds;
+    const Range<T> m_bounds;
 };
 
 #endif // LCC_ROBOTICS_22_23_INCLUDE_CORRECTION_H_
