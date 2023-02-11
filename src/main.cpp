@@ -4,8 +4,6 @@
 #include <etl/array.h>
 #include <etl/debounce.h>
 
-#include "encoder.h"
-#include "linearSlide.h"
 #include "pid.h"
 #include "remoteState.h"
 #include "utils.h"
@@ -50,25 +48,6 @@ constexpr etl::array<float, LINEAR_SLIDE_LEVELS> LINEAR_SLIDE_HEIGHTS { 0.0, 6.0
 constexpr Range<float> LINEAR_SLIDE_RANGE { 5.0, 200.0 };
 
 // ====================
-// Objects
-// ====================
-
-RotaryEncoder<float> elevatorEncoder {
-    ELEVATOR_ENCODER_PIN_A,
-    ELEVATOR_ENCODER_PIN_B,
-    LINEAR_SLIDE_ENCODER_STEP_SIZE
-};
-
-LinearSlide elevator {
-    ELEVATOR_MOTOR_PIN,
-    PID(1.0, 1.0, 1.0, PWM_MOTOR_BOUNDS<float>),
-    LINEAR_SLIDE_RANGE,
-    []() -> float {
-        return elevatorEncoder.getVal();
-    }
-};
-
-// ====================
 
 RState lastRemoteState;
 RState remoteState; // custom remote state that uses the forbidden arts
@@ -101,9 +80,6 @@ void loop()
 
     const unsigned int dt = CrcLib::GetDeltaTimeMillis();
 
-    elevator.update(dt);
-    elevatorEncoder.update();
-
     // Check if commands are valid
     if (!CrcLib::IsCommValid()) // controller not connected, don't run loop
     {
@@ -127,40 +103,4 @@ void loop()
         limitSlew<int8_t>(remoteState[YAW_CHANNEL], lastRemoteState[YAW_CHANNEL], maxSlew),
         LEFT_MOTOR_PIN,
         RIGHT_MOTOR_PIN);
-
-    // Linear slide
-    if (remoteState[LINEAR_SLIDE_MANUAL_CHANNEL]) {
-        if (elevator.setManualMode()) {
-            linearSlideLevel = -1;
-        }
-
-        elevator.set(
-            limitSlew<int8_t>(remoteState[LINEAR_SLIDE_MANUAL_CHANNEL], lastRemoteState[LINEAR_SLIDE_MANUAL_CHANNEL], maxSlew));
-
-    } else if (linearSlideNextButton.has_changed() && !linearSlideNextButton.is_set()) {
-        if (elevator.setAutoMode()) {
-            const float currHeight = elevator.getHeight();
-
-            for (int l = 0; l < LINEAR_SLIDE_LEVELS; ++l) {
-                if (LINEAR_SLIDE_HEIGHTS[l] > currHeight) {
-                    linearSlideLevel = l;
-                    break;
-                }
-            }
-        }
-        elevator.setHeight(LINEAR_SLIDE_HEIGHTS[linearSlideLevel]);
-
-    } else if (linearSlidePrevButton.has_changed() && !linearSlidePrevButton.is_set()) {
-        if (elevator.setAutoMode()) {
-            const float currHeight = elevator.getHeight();
-
-            for (int l = LINEAR_SLIDE_STAGES; l >= 0; --l) {
-                if (LINEAR_SLIDE_HEIGHTS[l] < currHeight) {
-                    linearSlideLevel = l;
-                    break;
-                }
-            }
-        }
-        elevator.setHeight(LINEAR_SLIDE_HEIGHTS[linearSlideLevel]);
-    }
 }
