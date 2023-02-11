@@ -14,7 +14,7 @@ with the `megaatmega2560` target, due to the way the project is structured.
 Make sure you have `git` installed on your machine. Then, clone this repository by command line:
 
 ```shell
-git clone https://github.com/LCC-Robotics/LCC-Robotics-22-23.git
+git clone https://github.com/LCC-Robotics/LCC-Robotics-CRC-2023.git
 ```
 
 ## Build and Upload
