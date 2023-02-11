@@ -37,15 +37,6 @@ constexpr uint8_t ELEVATOR_ENCODER_PIN_B = CRC_DIG_3;
 // ====================
 
 constexpr float DEFAULT_SLEW_RATE = 0.75;
-constexpr int ENCODER_STEPS = 30;
-
-constexpr int LINEAR_SLIDE_STAGES = 3;
-constexpr int LINEAR_SLIDE_LEVELS = 8;
-constexpr float LINEAR_SLIDE_SPOOL_DIAMETER = 2.0; // cm
-constexpr float LINEAR_SLIDE_ENCODER_STEP_SIZE = LINEAR_SLIDE_SPOOL_DIAMETER * LINEAR_SLIDE_STAGES * PI / ENCODER_STEPS; // cm - distance travelled per step of rotary encoder
-
-constexpr etl::array<float, LINEAR_SLIDE_LEVELS> LINEAR_SLIDE_HEIGHTS { 0.0, 6.0, 17.0, 38.0, 66.0, 102.0, 146.0, 190.0 }; // cm
-constexpr Range<float> LINEAR_SLIDE_RANGE { 5.0, 200.0 };
 
 // ====================
 
