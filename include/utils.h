@@ -11,14 +11,9 @@ struct Range {
     T upper;
 };
 
-template <typename T = int8_t>
-constexpr Range<T> PWM_MOTOR_BOUNDS { -128, 127 };
-
-template <typename T = int8_t>
-constexpr Range<T> PWM_LIMIT_POSITIVE { 0, 127 };
-
-template <typename T = int8_t>
-constexpr Range<T> PWM_LIMIT_NEGATIVE { -128, 0 };
+constexpr Range<int8_t> PWM_MOTOR_BOUNDS { -128, 127 };
+constexpr Range<int8_t> PWM_LIMIT_POSITIVE { 0, 127 };
+constexpr Range<int8_t> PWM_LIMIT_NEGATIVE { -128, 0 };
 
 // Simple function which prevents robot from committing self die by clamping the raws between lower and upper when limit switch is activated
 template <typename T = int>
