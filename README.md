@@ -3,12 +3,12 @@
 This repo contains the code for LCC's robot for AVIA 2023, a robotics competition hosted
 by [CRC Robotics](https://robo-crc.ca/).
 
-The project is scaffolded using the PlatformIO framework, as it allows for flexible and platform-agnostic projections
+The project is scaffolded using the [`PlatformIO`](https://platformio.org/) framework, as it allows for flexible and platform-agnostic projections
 with minimal configuration.
 
 ## Cloning the Repo
 
-Make sure you have `git` installed on your machine. Then, clone this repository by command line:
+Make sure you have [`git`](https://git-scm.com/) installed on your machine. Then, clone this repository by command line:
 
 ```shell
 git clone https://github.com/LCC-Robotics/LCC-Robotics-CRC-2023.git
