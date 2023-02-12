@@ -6,9 +6,6 @@ by [CRC Robotics](https://robo-crc.ca/).
 The project is scaffolded using the PlatformIO framework, as it allows for flexible and platform-agnostic projections
 with minimal configuration.
 
-**Important Note**: This project will only work with the `Arduino Mega 2560` or equivalent boards that is compatible
-with the `megaatmega2560` target, due to the way the project is structured.
-
 ## Cloning the Repo
 
 Make sure you have `git` installed on your machine. Then, clone this repository by command line:
