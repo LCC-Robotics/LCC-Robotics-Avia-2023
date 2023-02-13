@@ -7,7 +7,7 @@
 #include "remoteState.h"
 #include "utils.h"
 
-using namespace Crc;
+using Crc::CrcLib;
 
 // ====================
 // Controller Input

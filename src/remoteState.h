@@ -6,7 +6,7 @@
 using CrcUtility::ANALOG;
 using CrcUtility::BUTTON;
 
-using namespace Crc;
+using Crc::CrcLib;
 
 class RState { // proxy for CrcUtility::RemoteState
 public:
