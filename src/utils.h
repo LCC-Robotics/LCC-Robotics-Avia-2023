@@ -26,10 +26,9 @@ inline T safety(bool activated, T raw, const Range<T>& range)
 
 // https://www.embeddedrelated.com/showarticle/646.php
 // Smooths out sudden motions
-template <class T>
-inline T limitSlew(T raw, T prev_out, T max_deviation)
+inline int limitSlew(int raw, int prev_out, int max_deviation)
 {
-    T delta = raw - prev_out;
+    int delta = raw - prev_out;
     if (delta > max_deviation)
         delta = max_deviation;
     else if (delta < -max_deviation)
