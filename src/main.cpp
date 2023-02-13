@@ -4,6 +4,7 @@
 
 #include <etl/debounce.h>
 
+#include "motor.h"
 #include "remoteState.h"
 #include "utils.h"
 
@@ -48,8 +49,6 @@ constexpr uint8_t EXTENDER_FLIPPER_PIN = CRC_PWM_8;
 // Constants
 // ====================
 
-constexpr float DEFAULT_SLEW_RATE = 0.75;
-
 constexpr int32_t FLIPPER_RANGE = 3000; // steps
 
 // ====================
@@ -62,7 +61,11 @@ RState remoteState; // custom remote state that uses the forbidden arts
 etl::debounce<> dieButtonDebounce;
 etl::debounce<> FloorButtonDebounce;
 
-// floor flipper
+SlewLimitingMotor linearSlide { LINEAR_SLIDE_PIN };
+SlewLimitingMotor floorFlipper { FLOOR_FLIPPER_PIN };
+SlewLimitingMotor extender { EXTENDER_MOTOR_PIN };
+SlewLimitingMotor extenderFlipper { EXTENDER_MOTOR_PIN };
+
 Encoder flipperEncoder(FLOOR_FLIPPER_ENCODER_PIN_A, FLOOR_FLIPPER_ENCODER_PIN_B);
 Range<int32_t> flipperRange;
 
@@ -75,10 +78,6 @@ void setup()
     // Initialize pins
     CrcLib::InitializePwmOutput(LEFT_MOTOR_PIN, false);
     CrcLib::InitializePwmOutput(RIGHT_MOTOR_PIN, false);
-    CrcLib::InitializePwmOutput(LINEAR_SLIDE_PIN, false);
-    CrcLib::InitializePwmOutput(FLOOR_FLIPPER_PIN, false);
-    CrcLib::InitializePwmOutput(EXTENDER_MOTOR_PIN, false);
-    CrcLib::InitializePwmOutput(EXTENDER_FLIPPER_PIN, false);
 
     CrcLib::SetDigitalPinMode(FLOOR_FLIPPER_ENCODER_PIN_A, INPUT);
     CrcLib::SetDigitalPinMode(FLOOR_FLIPPER_ENCODER_PIN_B, INPUT);
@@ -94,9 +93,6 @@ void setup()
 void loop()
 {
     CrcLib::Update();
-
-    const unsigned int dt = CrcLib::GetDeltaTimeMillis();
-
     // Update remote state
     lastRemoteState = remoteState;
     remoteState = RState::Next();
@@ -116,35 +112,72 @@ void loop()
         return;
     }
 
-    // max amount that input can deviate by
-    const auto maxSlew = static_cast<int8_t>(DEFAULT_SLEW_RATE * dt);
+    const unsigned int dt = CrcLib::GetDeltaTimeMillis();
 
-    // move robot
+    linearSlide.update(dt);
+    floorFlipper.update(dt);
+    extender.update(dt);
+    extenderFlipper.update(dt);
+
+    // ======================
+    // MOVEMENT
+    // ======================
+
+    const auto maxMotorChange = static_cast<int8_t>(DEFAULT_SLEW_RATE * dt); // max amount that motor output can deviate by
     CrcLib::MoveArcade(
-        limitSlew(remoteState[FORWARD_CHANNEL], lastRemoteState[FORWARD_CHANNEL], maxSlew),
-        limitSlew(remoteState[YAW_CHANNEL], lastRemoteState[YAW_CHANNEL], maxSlew),
+        static_cast<int8_t>(limitSlew(remoteState[FORWARD_CHANNEL], lastRemoteState[FORWARD_CHANNEL], maxMotorChange)),
+        static_cast<int8_t>(limitSlew(remoteState[YAW_CHANNEL], lastRemoteState[YAW_CHANNEL], maxMotorChange)),
         LEFT_MOTOR_PIN,
         RIGHT_MOTOR_PIN);
 
-    // linear slide
-    CrcLib::SetPwmOutput(
-        LINEAR_SLIDE_PIN,
-        limitSlew(remoteState[LINEAR_SLIDE_CHANNEL], lastRemoteState[LINEAR_SLIDE_CHANNEL], maxSlew));
+    // ======================
+    // Linear Slide
+    // ======================
 
-    // extender
+    linearSlide.set(remoteState[LINEAR_SLIDE_CHANNEL]);
+
+    // ======================
+    // EXTENDER
+    // ======================
+
+    int8_t extenderOutput = 0;
+
+    if (remoteState[EXTENDER_FORWARDS_BUTTON])
+        extenderOutput = PWM_MOTOR_BOUNDS.upper;
+
+    if (remoteState[EXTENDER_BACKWARDS_BUTTON])
+        extenderOutput = PWM_MOTOR_BOUNDS.lower;
+
+    extender.set(extenderOutput);
+
+    // ======================
+    // EXTENDER FLIPPER
+    // ======================
+
+    int8_t extenderFlipperOutput = 0;
+
     if (remoteState[EXTENDER_FLIP_FORWARDS_BUTTON])
-        CrcLib::SetPwmOutput(EXTENDER_FLIPPER_PIN, PWM_MOTOR_BOUNDS.lower);
+        extenderFlipperOutput = PWM_MOTOR_BOUNDS.upper;
 
     if (remoteState[EXTENDER_FLIP_BACKWARDS_BUTTON])
-        CrcLib::SetPwmOutput(EXTENDER_FLIPPER_PIN, PWM_MOTOR_BOUNDS.upper);
+        extenderFlipperOutput = PWM_MOTOR_BOUNDS.lower;
 
-    // floor flipper
+    extenderFlipper.set(extenderFlipperOutput);
+
+    // ======================
+    // FLOOR FLIPPER
+    // ======================
+
     int32_t flipperEncoderValue = flipperEncoder.read();
 
+    int8_t flipperOutput = 0;
+
     if (FloorButtonDebounce.is_held() && flipperEncoderValue < flipperRange.upper)
-        CrcLib::SetPwmOutput(FLOOR_FLIPPER_PIN, PWM_MOTOR_BOUNDS.upper);
+        flipperOutput = PWM_MOTOR_BOUNDS.upper;
     else if (flipperEncoderValue < flipperRange.lower)
-        CrcLib::SetPwmOutput(FLOOR_FLIPPER_PIN, PWM_MOTOR_BOUNDS.lower);
+        flipperOutput = PWM_MOTOR_BOUNDS.lower;
     else
-        CrcLib::SetPwmOutput(FLOOR_FLIPPER_PIN, 0);
+        flipperOutput = 0;
+
+    floorFlipper.set(flipperOutput);
 }

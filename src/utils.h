@@ -11,10 +11,6 @@ struct Range {
     T upper;
 };
 
-constexpr Range<int8_t> PWM_MOTOR_BOUNDS { -128, 127 };
-constexpr Range<int8_t> PWM_LIMIT_POSITIVE { 0, 127 };
-constexpr Range<int8_t> PWM_LIMIT_NEGATIVE { -128, 0 };
-
 template <class T>
 // Simple function which prevents robot from committing self die by clamping the raws between lower and upper when limit switch is activated
 inline T safety(bool activated, T raw, const Range<T>& range)
