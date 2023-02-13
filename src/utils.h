@@ -15,8 +15,8 @@ constexpr Range<int8_t> PWM_MOTOR_BOUNDS { -128, 127 };
 constexpr Range<int8_t> PWM_LIMIT_POSITIVE { 0, 127 };
 constexpr Range<int8_t> PWM_LIMIT_NEGATIVE { -128, 0 };
 
+template <class T>
 // Simple function which prevents robot from committing self die by clamping the raws between lower and upper when limit switch is activated
-template <typename T = int>
 inline T safety(bool activated, T raw, const Range<T>& range)
 {
     if (!activated)
@@ -26,7 +26,7 @@ inline T safety(bool activated, T raw, const Range<T>& range)
 
 // https://www.embeddedrelated.com/showarticle/646.php
 // Smooths out sudden motions
-template <typename T = int>
+template <class T>
 inline T limitSlew(T raw, T prev_out, T max_deviation)
 {
     T delta = raw - prev_out;
