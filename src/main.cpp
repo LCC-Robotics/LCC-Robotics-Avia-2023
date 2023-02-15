@@ -14,19 +14,19 @@ using namespace Crc;
 // Controller Input
 // ====================
 
-constexpr ANALOG FORWARD_CHANNEL = ANALOG::JOYSTICK1_Y; // done
-constexpr ANALOG YAW_CHANNEL = ANALOG::JOYSTICK1_X; // done
+constexpr ANALOG FORWARD_CHANNEL = ANALOG::JOYSTICK1_Y; 
+constexpr ANALOG YAW_CHANNEL = ANALOG::JOYSTICK1_X; 
 
-constexpr ANALOG LINEAR_SLIDE_CHANNEL = ANALOG::JOYSTICK2_Y; // done
+constexpr ANALOG LINEAR_SLIDE_CHANNEL = ANALOG::JOYSTICK2_Y; 
 
-constexpr BUTTON DIE_BUTTON = BUTTON::LOGO; // done
+constexpr BUTTON DIE_BUTTON = BUTTON::LOGO; 
 constexpr BUTTON FLOOR_FLIPPER_BUTTON = BUTTON::COLORS_DOWN;
 
-constexpr BUTTON EXTENDER_FORWARDS_BUTTON = BUTTON::R1; // done
-constexpr BUTTON EXTENDER_BACKWARDS_BUTTON = BUTTON::L1; // done
+constexpr BUTTON EXTENDER_FORWARDS_BUTTON = BUTTON::R1; 
+constexpr BUTTON EXTENDER_BACKWARDS_BUTTON = BUTTON::L1; 
 
-constexpr BUTTON EXTENDER_FLIP_FORWARDS_BUTTON = BUTTON::COLORS_LEFT; // done
-constexpr BUTTON EXTENDER_FLIP_BACKWARDS_BUTTON = BUTTON::COLORS_RIGHT; // done
+constexpr BUTTON EXTENDER_FLIP_FORWARDS_BUTTON = BUTTON::COLORS_LEFT; 
+constexpr BUTTON EXTENDER_FLIP_BACKWARDS_BUTTON = BUTTON::COLORS_RIGHT; 
 
 // ====================
 // Pins
@@ -78,14 +78,10 @@ void setup()
     // Initialize pins
     CrcLib::InitializePwmOutput(LEFT_MOTOR_PIN, false);
     CrcLib::InitializePwmOutput(RIGHT_MOTOR_PIN, true);
-
-    //CrcLib::InitializePwmOutput(LINEAR_SLIDE_PIN, false);
-    //CrcLib::InitializePwmOutput(FLOOR_FLIPPER_PIN, false);
-    //CrcLib::InitializePwmOutput(EXTENDER_MOTOR_PIN, false);
-    //CrcLib::InitializePwmOutput(EXTENDER_FLIPPER_PIN, false);
     
-    flipperRange.lower = flipperEncoder.read();
-    flipperRange.upper = flipperRange.lower + FLIPPER_RANGE;
+    
+    flipperRange.lower = 0;
+    flipperRange.upper = FLIPPER_RANGE;
 
 #ifdef DEBUG // only start serial if in debug mode (serial can affect performance)
     Serial.begin(BAUD); // macro defined in platformio.ini
@@ -155,34 +151,34 @@ void loop()
     extender.set(extenderOutput);
 
     // ======================
-    // EXTENDER FLIPPER ()
+    // EXTENDER FLIPPER
     // ======================
 
     int8_t extenderFlipperOutput = 0;
 
-    if (remoteState[EXTENDER_FLIP_FORWARDS_BUTTON]){
+    if (remoteState[EXTENDER_FLIP_FORWARDS_BUTTON]) {
         extenderFlipperOutput = PWM_MOTOR_BOUNDS.upper;
-    }
-    else if (remoteState[EXTENDER_FLIP_BACKWARDS_BUTTON]){
+    } 
+    else if (remoteState[EXTENDER_FLIP_BACKWARDS_BUTTON]) {
         extenderFlipperOutput = PWM_MOTOR_BOUNDS.lower;
     }
     extenderFlipper.set(extenderFlipperOutput);
 
     // ======================
-    // FLOOR FLIPPER (checked)
+    // FLOOR FLIPPER
     // ======================
 
     int32_t flipperEncoderValue = flipperEncoder.read();
 
     int8_t flipperOutput = 0;
 
-    if (FloorButtonDebounce.is_held() && flipperEncoderValue <= flipperRange.upper){
+    if (FloorButtonDebounce.is_held() && flipperEncoderValue <= flipperRange.upper) {
         flipperOutput = PWM_MOTOR_BOUNDS.lower;
     }
     else if (flipperEncoderValue > flipperRange.lower){
         flipperOutput = PWM_MOTOR_BOUNDS.upper;
-    }
-    else{
+    } 
+    else {
         flipperOutput = 0;
     }
 
