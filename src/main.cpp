@@ -8,7 +8,7 @@
 #include "remoteState.h"
 #include "utils.h"
 
-using Crc::CrcLib;
+using namespace Crc;
 
 // ====================
 // Controller Input
@@ -49,7 +49,7 @@ constexpr uint8_t EXTENDER_FLIPPER_PIN = CRC_PWM_8;
 // Constants
 // ====================
 
-constexpr int32_t FLIPPER_RANGE = 3000; // steps
+constexpr int32_t FLIPPER_RANGE = 1300; // steps
 
 // ====================
 // Objects
@@ -64,7 +64,7 @@ etl::debounce<> FloorButtonDebounce;
 SlewLimitingMotor linearSlide { LINEAR_SLIDE_PIN };
 SlewLimitingMotor floorFlipper { FLOOR_FLIPPER_PIN };
 SlewLimitingMotor extender { EXTENDER_MOTOR_PIN };
-SlewLimitingMotor extenderFlipper { EXTENDER_MOTOR_PIN };
+SlewLimitingMotor extenderFlipper { EXTENDER_FLIPPER_PIN };
 
 Encoder flipperEncoder(FLOOR_FLIPPER_ENCODER_PIN_A, FLOOR_FLIPPER_ENCODER_PIN_B);
 Range<int32_t> flipperRange;
@@ -79,9 +79,11 @@ void setup()
     CrcLib::InitializePwmOutput(LEFT_MOTOR_PIN, false);
     CrcLib::InitializePwmOutput(RIGHT_MOTOR_PIN, true);
 
-    CrcLib::SetDigitalPinMode(FLOOR_FLIPPER_ENCODER_PIN_A, INPUT);
-    CrcLib::SetDigitalPinMode(FLOOR_FLIPPER_ENCODER_PIN_B, INPUT);
-
+    //CrcLib::InitializePwmOutput(LINEAR_SLIDE_PIN, false);
+    //CrcLib::InitializePwmOutput(FLOOR_FLIPPER_PIN, false);
+    //CrcLib::InitializePwmOutput(EXTENDER_MOTOR_PIN, false);
+    //CrcLib::InitializePwmOutput(EXTENDER_FLIPPER_PIN, false);
+    
     flipperRange.lower = flipperEncoder.read();
     flipperRange.upper = flipperRange.lower + FLIPPER_RANGE;
 
@@ -144,16 +146,16 @@ void loop()
 
     int8_t extenderOutput = 0;
 
-    if (remoteState[EXTENDER_FORWARDS_BUTTON])
+    if (remoteState[EXTENDER_FORWARDS_BUTTON]){
         extenderOutput = PWM_MOTOR_BOUNDS.upper;
-
-    if (remoteState[EXTENDER_BACKWARDS_BUTTON])
+    }
+    if (remoteState[EXTENDER_BACKWARDS_BUTTON]){
         extenderOutput = PWM_MOTOR_BOUNDS.lower;
-
+    }
     extender.set(extenderOutput);
 
     // ======================
-    // EXTENDER FLIPPER
+    // EXTENDER FLIPPER ()
     // ======================
 
     int8_t extenderFlipperOutput = 0;
@@ -177,7 +179,7 @@ void loop()
     if (FloorButtonDebounce.is_held() && flipperEncoderValue <= flipperRange.upper){
         flipperOutput = PWM_MOTOR_BOUNDS.lower;
     }
-    else if (flipperEncoderValue > 0){
+    else if (flipperEncoderValue > flipperRange.lower){
         flipperOutput = PWM_MOTOR_BOUNDS.upper;
     }
     else{
