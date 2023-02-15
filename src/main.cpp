@@ -49,7 +49,8 @@ constexpr uint8_t EXTENDER_FLIPPER_PIN = CRC_PWM_8;
 // Constants
 // ====================
 
-constexpr int32_t FLIPPER_RANGE = 1300; // steps
+constexpr int32_t flipperUpper = 1300; 
+constexpr int32_t flipperLower = 0;
 
 // ====================
 // Objects
@@ -78,10 +79,7 @@ void setup()
     // Initialize pins
     CrcLib::InitializePwmOutput(LEFT_MOTOR_PIN, false);
     CrcLib::InitializePwmOutput(RIGHT_MOTOR_PIN, true);
-    
-    
-    flipperRange.lower = 0;
-    flipperRange.upper = FLIPPER_RANGE;
+
 
 #ifdef DEBUG // only start serial if in debug mode (serial can affect performance)
     Serial.begin(BAUD); // macro defined in platformio.ini
@@ -172,10 +170,10 @@ void loop()
 
     int8_t flipperOutput = 0;
 
-    if (FloorButtonDebounce.is_held() && flipperEncoderValue <= flipperRange.upper) {
+    if (FloorButtonDebounce.is_held() && flipperEncoderValue <= flipperUpper) {
         flipperOutput = PWM_MOTOR_BOUNDS.lower;
     }
-    else if (flipperEncoderValue > flipperRange.lower){
+    else if (flipperEncoderValue > flipperLower){
         flipperOutput = PWM_MOTOR_BOUNDS.upper;
     } 
     else {
