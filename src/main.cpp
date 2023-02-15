@@ -79,6 +79,10 @@ void setup()
     // Initialize pins
     CrcLib::InitializePwmOutput(LEFT_MOTOR_PIN, false);
     CrcLib::InitializePwmOutput(RIGHT_MOTOR_PIN, true);
+    CrcLib::InitializePwmOutput(LINEAR_SLIDE_PIN, false);
+    CrcLib::InitializePwmOutput(FLOOR_FLIPPER_PIN, false);
+    CrcLib::InitializePwmOutput(EXTENDER_MOTOR_PIN, false);
+    CrcLib::InitializePwmOutput(EXTENDER_MOTOR_PIN, false);
 
 
 #ifdef DEBUG // only start serial if in debug mode (serial can affect performance)
@@ -156,8 +160,7 @@ void loop()
 
     if (remoteState[EXTENDER_FLIP_FORWARDS_BUTTON]) {
         extenderFlipperOutput = PWM_MOTOR_BOUNDS.upper;
-    } 
-    else if (remoteState[EXTENDER_FLIP_BACKWARDS_BUTTON]) {
+    }  else if (remoteState[EXTENDER_FLIP_BACKWARDS_BUTTON]) {
         extenderFlipperOutput = PWM_MOTOR_BOUNDS.lower;
     }
     extenderFlipper.set(extenderFlipperOutput);
@@ -170,13 +173,13 @@ void loop()
 
     int8_t flipperOutput = 0;
 
-    if (FloorButtonDebounce.is_held() && flipperEncoderValue <= flipperUpper) {
+    if (FloorButtonDebounce.is_held() && flipperEncoderValue <= flipperRange.upper){
         flipperOutput = PWM_MOTOR_BOUNDS.lower;
     }
-    else if (flipperEncoderValue > flipperLower){
+    else if (flipperEncoderValue > 0){
         flipperOutput = PWM_MOTOR_BOUNDS.upper;
-    } 
-    else {
+    }
+    else{
         flipperOutput = 0;
     }
 
