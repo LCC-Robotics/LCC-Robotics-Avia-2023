@@ -77,7 +77,7 @@ void setup()
 
     // Initialize pins
     CrcLib::InitializePwmOutput(LEFT_MOTOR_PIN, false);
-    CrcLib::InitializePwmOutput(RIGHT_MOTOR_PIN, false);
+    CrcLib::InitializePwmOutput(RIGHT_MOTOR_PIN, true);
 
     CrcLib::SetDigitalPinMode(FLOOR_FLIPPER_ENCODER_PIN_A, INPUT);
     CrcLib::SetDigitalPinMode(FLOOR_FLIPPER_ENCODER_PIN_B, INPUT);
@@ -103,6 +103,8 @@ void loop()
     // Check if commands are valid
     if (!CrcLib::IsCommValid() || dieButtonDebounce.is_held()) // controller not connected, don't run loop
     {
+        CrcLib::Update();
+
         CrcLib::SetPwmOutput(LINEAR_SLIDE_PIN, 0);
         CrcLib::SetPwmOutput(FLOOR_FLIPPER_PIN, 0);
         CrcLib::SetPwmOutput(EXTENDER_MOTOR_PIN, 0);
@@ -156,28 +158,31 @@ void loop()
 
     int8_t extenderFlipperOutput = 0;
 
-    if (remoteState[EXTENDER_FLIP_FORWARDS_BUTTON])
+    if (remoteState[EXTENDER_FLIP_FORWARDS_BUTTON]){
         extenderFlipperOutput = PWM_MOTOR_BOUNDS.upper;
-
-    if (remoteState[EXTENDER_FLIP_BACKWARDS_BUTTON])
+    }
+    else if (remoteState[EXTENDER_FLIP_BACKWARDS_BUTTON]){
         extenderFlipperOutput = PWM_MOTOR_BOUNDS.lower;
-
+    }
     extenderFlipper.set(extenderFlipperOutput);
 
     // ======================
-    // FLOOR FLIPPER
+    // FLOOR FLIPPER (checked)
     // ======================
 
     int32_t flipperEncoderValue = flipperEncoder.read();
 
     int8_t flipperOutput = 0;
 
-    if (FloorButtonDebounce.is_held() && flipperEncoderValue < flipperRange.upper)
-        flipperOutput = PWM_MOTOR_BOUNDS.upper;
-    else if (flipperEncoderValue < flipperRange.lower)
+    if (FloorButtonDebounce.is_held() && flipperEncoderValue <= flipperRange.upper){
         flipperOutput = PWM_MOTOR_BOUNDS.lower;
-    else
+    }
+    else if (flipperEncoderValue > 0){
+        flipperOutput = PWM_MOTOR_BOUNDS.upper;
+    }
+    else{
         flipperOutput = 0;
+    }
 
     floorFlipper.set(flipperOutput);
 }
