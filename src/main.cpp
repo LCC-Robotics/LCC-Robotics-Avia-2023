@@ -62,13 +62,16 @@ RState remoteState; // custom remote state that uses the forbidden arts
 etl::debounce<> dieButtonDebounce;
 etl::debounce<> FloorButtonDebounce;
 
+/*
 SlewLimitingMotor linearSlide { LINEAR_SLIDE_PIN };
 SlewLimitingMotor floorFlipper { FLOOR_FLIPPER_PIN };
 SlewLimitingMotor extender { EXTENDER_MOTOR_PIN };
 SlewLimitingMotor extenderFlipper { EXTENDER_FLIPPER_PIN };
+*/
 
 Encoder flipperEncoder(FLOOR_FLIPPER_ENCODER_PIN_A, FLOOR_FLIPPER_ENCODER_PIN_B);
-Range<int32_t> flipperRange;
+
+//Range<int32_t> flipperRange;
 
 // ====================
 
@@ -80,6 +83,10 @@ void setup()
     CrcLib::InitializePwmOutput(LEFT_MOTOR_PIN, false);
     CrcLib::InitializePwmOutput(RIGHT_MOTOR_PIN, true);
 
+    CrcLib::InitializePwmOutput(LINEAR_SLIDE_PIN, false);
+    CrcLib::InitializePwmOutput(FLOOR_FLIPPER_PIN, false);
+    CrcLib::InitializePwmOutput(EXTENDER_MOTOR_PIN, false);
+    CrcLib::InitializePwmOutput(EXTENDER_FLIPPER_PIN, false);
 
 #ifdef DEBUG // only start serial if in debug mode (serial can affect performance)
     Serial.begin(BAUD); // macro defined in platformio.ini
@@ -97,7 +104,7 @@ void loop()
     FloorButtonDebounce.add(remoteState[FLOOR_FLIPPER_BUTTON]);
 
     // Check if commands are valid
-    if (!CrcLib::IsCommValid() || dieButtonDebounce.is_held()) // controller not connected, don't run loop
+    if ((CrcLib::IsCommValid() == false) || (CrcLib::ReadDigitalChannel(DIE_BUTTON) == 1)) // controller not connected, don't run loop
     {
         CrcLib::Update();
 
@@ -105,35 +112,37 @@ void loop()
         CrcLib::SetPwmOutput(FLOOR_FLIPPER_PIN, 0);
         CrcLib::SetPwmOutput(EXTENDER_MOTOR_PIN, 0);
         CrcLib::SetPwmOutput(EXTENDER_FLIPPER_PIN, 0);
-        CrcLib::MoveArcade(0, 0, LEFT_MOTOR_PIN, RIGHT_MOTOR_PIN); // should fix jerking problem from last year?
+        CrcLib::SetPwmOutput(LEFT_MOTOR_PIN, 0); 
+        CrcLib::SetPwmOutput(RIGHT_MOTOR_PIN, 0);// should fix jerking problem from last year?
 
         return;
     }
 
-    const unsigned int dt = CrcLib::GetDeltaTimeMillis();
-
+    //const unsigned int dt = CrcLib::GetDeltaTimeMillis();
+    
+     /*
     linearSlide.update(dt);
     floorFlipper.update(dt);
     extender.update(dt);
     extenderFlipper.update(dt);
+    */
 
     // ======================
     // MOVEMENT
     // ======================
 
-    const auto maxMotorChange = static_cast<int8_t>(DEFAULT_SLEW_RATE * dt); // max amount that motor output can deviate by
-    CrcLib::MoveArcade(
-        static_cast<int8_t>(limitSlew(remoteState[FORWARD_CHANNEL], lastRemoteState[FORWARD_CHANNEL], maxMotorChange)),
-        static_cast<int8_t>(limitSlew(remoteState[YAW_CHANNEL], lastRemoteState[YAW_CHANNEL], maxMotorChange)),
-        LEFT_MOTOR_PIN,
-        RIGHT_MOTOR_PIN);
+    // const auto maxMotorChange = static_cast<int8_t>(DEFAULT_SLEW_RATE * dt); // max amount that motor output can deviate by
+    CrcLib::MoveArcade(FORWARD_CHANNEL, YAW_CHANNEL, LEFT_MOTOR_PIN, RIGHT_MOTOR_PIN);
+
 
     // ======================
     // Linear Slide
     // ======================
 
-    linearSlide.set(remoteState[LINEAR_SLIDE_CHANNEL]);
-
+    //linearSlide.set(remoteState[LINEAR_SLIDE_CHANNEL]);
+    int linearSlideOutput = CrcLib::ReadAnalogChannel(LINEAR_SLIDE_CHANNEL);
+    CrcLib::SetPwmOutput(LINEAR_SLIDE_PIN, linearSlideOutput);
+    
     // ======================
     // EXTENDER
     // ======================
@@ -146,7 +155,7 @@ void loop()
     if (remoteState[EXTENDER_BACKWARDS_BUTTON]){
         extenderOutput = PWM_MOTOR_BOUNDS.lower;
     }
-    extender.set(extenderOutput);
+    CrcLib::SetPwmOutput(EXTENDER_MOTOR_PIN, extenderOutput);
 
     // ======================
     // EXTENDER FLIPPER
@@ -160,25 +169,24 @@ void loop()
     else if (remoteState[EXTENDER_FLIP_BACKWARDS_BUTTON]) {
         extenderFlipperOutput = PWM_MOTOR_BOUNDS.lower;
     }
-    extenderFlipper.set(extenderFlipperOutput);
+    CrcLib::SetPwmOutput(EXTENDER_FLIPPER_PIN, extenderFlipperOutput);
 
     // ======================
     // FLOOR FLIPPER
     // ======================
 
     int32_t flipperEncoderValue = flipperEncoder.read();
-
     int8_t flipperOutput = 0;
 
-    if (FloorButtonDebounce.is_held() && flipperEncoderValue <= flipperUpper) {
-        flipperOutput = PWM_MOTOR_BOUNDS.lower;
+    if (CrcLib::ReadDigitalChannel(FLOOR_FLIPPER_BUTTON) && flipperEncoderValue <= 1300) {
+        flipperOutput = -128;
     }
-    else if (flipperEncoderValue > flipperLower){
-        flipperOutput = PWM_MOTOR_BOUNDS.upper;
-    } 
+    else if (flipperEncoderValue > 0) {
+        flipperOutput = 127;
+    }
     else {
         flipperOutput = 0;
     }
-
-    floorFlipper.set(flipperOutput);
+    
+    CrcLib::SetPwmOutput(FLOOR_FLIPPER_PIN, flipperOutput); 
 }
