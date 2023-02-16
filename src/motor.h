@@ -23,7 +23,6 @@ public:
         , m_reversed { reversed }
         , m_slewRate { slewRate }
     {
-        CrcLib::InitializePwmOutput(pin, false);
     }
 
     void update(float millis)
